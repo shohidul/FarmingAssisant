@@ -1,0 +1,352 @@
+<br />
+<br />
+<br />
+<div class="row">
+    <div class="col-md-6">
+    	<form id="itmForm">
+	        <h3>Billing & Shipping</h3>
+	        <br />
+	        <input type="hidden" id="cusId">
+	        <p id="cusName"></p>
+	        <p id="cusAddress"></p>
+	        <p id="cusMobile"></p>
+	        <p id="cusEmail"></p>
+	        
+	        <div class="form-group">
+	            <label for="additionalInfo" class="">Additional Infornation</label>
+	            <textarea class="form-control form-control" rows="5" id="additionalInfo" aria-describedby="additionalInfo"></textarea>
+	        </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+    	<div class="shadow rounded p-4">
+    		<h3 class="text-center">Your order</h3>
+			<hr>
+			<div class="cart-items"></div>
+			<hr>
+			<p class="d-flex justify-content-between"><small class="">Sub Total:</small><small><small>TK </small><small id="subTotalAmtLbl"> 0</small></small></p>
+			<p class="d-flex justify-content-between"><small class="">Vat Total:</small><small><small>TK </small><small id="vatTotalAmtLbl"> 0</small></small></p>
+			<p id="shippingDetails"class="d-flex justify-content-between pb-2"><small class="">Shipping</small><small><small>TK </small><small id="shippingAmtLbl">0</small></small></p>
+			<p class="d-flex justify-content-between"><small class="b">Total:</small><small class="b"><small>TK </small><small id="totalAmtLbl" class="b">0</small></small></p>
+			<br />
+			<div class="form-check pb-2">
+			  <input class="form-check-input" type="radio" name="statusRadio" id="eatIn" value="Eat In" checked>
+			  <label class="form-check-label" for="eatIn">
+			    Eat In
+			  </label>
+			</div>
+			<div class="form-check pb-2">
+			  <input class="form-check-input" type="radio" name="statusRadio" id="takeAway" value="Take Away">
+			  <label class="form-check-label" for="takeAway">
+			    Take Away
+			  </label>
+			</div>
+			
+			<br />
+			<div class="form-check pb-2">
+			  <input class="form-check-input" type="radio" name="payMethodRadio" id="Cash on delivery" value="Cash on delivery" checked>
+			  <label class="form-check-label" for="cod">
+			    Cash on delivery
+			  </label>
+			</div>
+			<p id="codDetails" class="text-muted pb-2"><small>Full payment must be made upon receiving the product.</small></p>
+			
+			<div class="form-check pb-2">
+			  <input class="form-check-input" type="radio" name="payMethodRadio" id="bkash" value="bKash">
+			  <label class="form-check-label" for="bkash">
+			    bKash
+			  </label>
+			</div>
+			<div id="bkashDetails" class="pb-2">
+				<p class="text-muted">
+					<small>To send money to Bikash, select "Send Money" option
+						through Bikash App or directly by dialing *247#. <br>Pay your
+						total bill to our development number "01886203001". <br>Note:
+						Bills must be paid through "Send Money" option only <br>bKash
+						Personal Number : 0123456789
+					</small>
+				</p>
+
+				<div class="form-group row">
+					<label for="bkashNumber" class="col-md-4">bKash Number</label>
+					<input type="text" class="form-control col-md-7" id="bkashNumber" placeholder="017XXXXXXXX" value="" />
+				</div>
+				<div class="form-group row">
+					<label for="bkashTrnxId" class="col-md-4">Trnx ID</label>
+					<input type="text" class="form-control col-md-7" id="bkashTrnxId" placeholder="8N7ASG5EE25" value="" />
+				</div>
+			</div>
+			<div class="form-check pb-2">
+			  <input class="form-check-input" type="radio" name="payMethodRadio" id="nagad" value="Nagad">
+			  <label class="form-check-label" for="nagad">
+			    Nagad
+			  </label>
+			</div>
+			<div id="nagaDetails" class="pb-2">
+				<p class="text-muted">
+					<small>To pay in Nagad, select the "Send
+						Money" option through the Cash App or directly by dialing *167#.
+						<br>Pay your total bill to our cash number "0123456789". <br>Note:
+						Bills must be paid through "Send Money" option only <br>Nagad
+						Personal Number : 0123456789
+					</small>
+				</p>
+
+				<div class="form-group row">
+					<label for="nagadNumber" class="col-md-4">Nagad Number</label>
+					<input type="text" class="form-control col-md-7" id="nagadNumber" placeholder="017XXXXXXXX" value="" />
+				</div>
+				<div class="form-group row">
+					<label for="bkashTrnxId" class="col-md-4">Trnx ID</label>
+					<input type="text" class="form-control col-md-7" id="nagadTrnxId" placeholder="8N7ASG5EE25" value="" />
+				</div>
+			</div>
+			<button class="btn btn-warning w-100 mt-3" onclick="placeOrder()"><small class="b">PLACE ORDER</small></button>
+    	</div>
+    </div>
+</div>
+
+<script>
+	var itemsForDBArray = [];
+	
+	$("#shippingDetails").hide();
+	$('input:radio[name=statusRadio]').change(function() {
+	    if (this.value == 'Take Away') {
+	    	$("#shippingAmtLbl").text("50");
+	    	var val = parseFloat($("#totalAmtLbl").text());
+	    	val+= 50;
+	    	$("#totalAmtLbl").text(val);
+	    }else{
+	    	$("#shippingAmtLbl").text("0");
+	    	var val = parseFloat($("#totalAmtLbl").text());
+	    	val-= 50;
+	    	$("#totalAmtLbl").text(val);
+	    }
+	});
+
+	$("#bkashDetails").hide();
+	$("#nagaDetails").hide();
+	$('input:radio[name=payMethodRadio]').change(function() {
+	    if (this.value == 'cod') {
+	    	$("#codDetails").slideDown(200);
+	    	$("#bkashDetails").slideUp(200);
+	    	$("#nagaDetails").slideUp(200);
+	    }
+	    else if (this.value == 'bkash') {
+	    	$("#codDetails").slideUp(200);
+	    	$("#bkashDetails").slideDown(200);
+	    	$("#nagaDetails").slideUp(200);
+	    }else{
+	    	$("#codDetails").slideUp(200);
+	    	$("#bkashDetails").slideUp(200);
+	    	$("#nagaDetails").slideDown(200);
+	    }
+	});
+
+
+	function getUser(){
+    	var request = $.ajax({
+			url: root + "/api/users",
+			type: "GET",
+
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + userDetails.accessToken
+			},
+		});
+
+		request.done(function (data) {
+			$("#cusId").val(data.id);
+		    $("#cusName").text(data.firstname +" "+ data.lastname);
+		    $("#cusAddress").text(data.address);
+		    $("#cusMobile").text(data.mobile);
+		    $("#cusEmail").text(data.email);
+		});
+
+		request.fail(function (jqXHR, textStatus) {
+			alert("Request failed: " + jqXHR.responseJSON.message);
+		});
+	}
+	getUser();
+
+	var cartItems;
+	var shop = window.localStorage.getItem("genericfosshop")
+	if (shop !== null) {
+		shop = JSON.parse(shop);
+		// set from local storage
+		cartItems = window.localStorage.getItem("genericfoscart"+shop.id);
+		
+		if (cartItems !== null) {
+			cartItems = JSON.parse(cartItems);
+			
+			var subTotalAmt = 0;
+			var vatTotalAmt = 0;
+			for (var i = 0; i < cartItems.length; i++) {
+				var item = cartItems[i];
+				setToCart(item);
+				
+				var disc = item.discountRate * item.price / 100;
+				var price = item.price - disc;
+				
+				subTotalAmt += price;			
+				
+				var vat = item.vatRate * item.price / 100;
+				vatTotalAmt += vat;
+			}
+			$("#subTotalAmtLbl").text(subTotalAmt);
+			$("#vatTotalAmtLbl").text(vatTotalAmt);
+			
+			var totalAmt = subTotalAmt + vatTotalAmt;
+		    $("#totalAmtLbl").text(totalAmt);
+		}
+	}
+	
+
+	
+
+	function setToCart(item){ 
+		var disc = item.discountRate * item.price / 100;
+		var price = item.price - disc;
+		
+		var itemElement = $(".cart-items").find(".cart-item-"+item.id);
+
+		if(itemElement.length > 0){
+			var qty = parseInt($(itemElement).find(".qty").text());
+			qty += 1;
+			$(itemElement).find(".qty").text(qty);
+			
+			var totPrice = price * qty;
+			$(itemElement).find(".price").text(totPrice);
+			
+			let obj = itemsForDBArray.find((o, i) => {
+			    if (o.id === item.id) {
+			    	itemsForDBArray[i].qty = qty;
+			    	itemsForDBArray[i].price = totPrice;
+			        return true; // stop searching
+			    }
+			});
+		}else{
+			var itemsForDB = {};
+			itemsForDB.id = item.id;
+			itemsForDB.category = item.category;
+			itemsForDB.name = item.name;
+			itemsForDB.price = price;
+			itemsForDB.qty = 1;
+			itemsForDBArray[itemsForDBArray.length] = itemsForDB;
+			
+			var hr = $(".cart-items").children().length > 0 ? '<hr>': "";
+			var html = '<div class="cart-item cart-item-'+ item.id +'">'+
+							hr +
+							'<input type="hidden" class="item-id" value="'+ item.id +'">'+
+							'<input type="hidden" class="item-category-'+ item.id +'" value="'+ item.category +'">'+
+							'<div class="d-flex align-items-center">'+
+								'<img src="' + item.image + '" class="w50">'+
+								'<div class="d-flex justify-content-between ml-4 w-100">'+
+									'<div>'+
+										'<p class="mb-0 card-title b item-name-'+ item.id +'">' + item.name + '</p>'+
+										'<small class="card-title mb-0 b text-danger"><small class="qty item-qty"> 1 </small> x <small class="price item-price-'+ item.id +'"> ' + price + ' </small></small>'+
+								//'</div>'+
+								//	'<button class="btn cart-itm-close">'+
+								//		'<i class="fa-solid fa-xmark"></i>'+
+								//	'</button>'+
+								//'</div>'+
+							'</div>'+
+						'</div>';
+			$(".cart-items").append(html);
+		}
+		
+	}
+	function placeOrder(){
+		var cusId = $("#cusId").val();
+		var cusName = $("#cusName").text();
+		var cusAddress = $("#cusAddress").text();
+		var cusMobile = $("#cusMobile").text();
+		var additionalInfo = $("#additionalInfo").val();
+		var subTotalAmt = $("#subTotalAmtLbl").text();
+		var vatTotalAmt = $("#vatTotalAmtLbl").text();
+		var totalAmt = $("#totalAmtLbl").text();
+		
+		//console.log(cusId+" "+additionalInfo+" "+subTotalAmt+" "+vatTotalAmt+" "+totalAmt);
+		
+		var status = $('input:radio[name=statusRadio]:checked').val();
+		var shippingCost = status === "Eat In" ? 0 : 50;
+
+		var request = $.ajax({
+			url: root + "/api/invoices",
+			type: "POST",
+			data: JSON.stringify({
+				cusId: cusId,
+				cusName: cusName,
+				cusAddress: cusAddress,
+				cusMobile: cusMobile,
+				additionalInfo: additionalInfo,
+				subTotalAmt: subTotalAmt,
+				vatTotalAmt: vatTotalAmt,
+				totalAmt: totalAmt,
+				paymentMethod: $('input:radio[name=payMethodRadio]:checked').val(),
+				status: status,
+				shipping: shippingCost,
+				shop: shop.id
+			}),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + userDetails.accessToken
+			},
+		});
+
+		request.done(function (invoice) {
+			window.localStorage.setItem("genericfosinv", invoice.id);
+			console.log(invoice);
+			let obj = itemsForDBArray.find((o, i) => {
+				
+				var itemId = itemsForDBArray[i].id;
+				var itemName = itemsForDBArray[i].name;
+				var itemQty = itemsForDBArray[i].qty;
+				var itemPrice = itemsForDBArray[i].price;
+				var itemCategory = itemsForDBArray[i].category;
+				
+
+				//console.log(itemId+" "+itemName+" "+itemPrice+" "+itemQty+" "+itemCategory);
+				
+				var request = $.ajax({
+					url: root + "/api/invoiceitems",
+					type: "POST",
+					data: JSON.stringify({
+						invoiceId: invoice.id,
+						itemId: itemId,
+						itemName: itemName,
+						itemQty: itemQty,
+						itemPrice: itemPrice,
+						itemCategory: itemCategory,
+						shop: shop.id
+					}),
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+		                "Authorization": 'Bearer ' + userDetails.accessToken
+					},
+				});
+
+				request.done(function (data) {
+					console.log(data);
+				});
+
+				request.fail(function (jqXHR, textStatus) {
+					alert("Request failed: " + jqXHR.responseJSON.message);
+				});
+			})
+			window.localStorage.removeItem("genericfoscart"+shop.id);
+			$("#contents").load("/pages/invoice.html");
+			window.localStorage.setItem("genericfospage", "invoice");
+			
+			//alert("Invoice created successfully.");
+		});
+
+		request.fail(function (jqXHR, textStatus) {
+			alert("Request failed: " + jqXHR.responseJSON.message);
+		});
+		
+	}
+</script>

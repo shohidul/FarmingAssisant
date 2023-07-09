@@ -1,0 +1,126 @@
+<style>
+	.shop-btn {
+		position: absolute;
+		right: 0;
+		bottom: 28px;
+		font-size: 12px;
+		font-weight: bold;
+		margin-right: 0;
+		border-bottom-left-radius: 5px;
+		border-top-left-radius: 5px;
+		border-bottom-right-radius: 0;
+		border-top-right-radius: 0;
+	}
+
+	.shop-card {
+		position: relative;
+		width: 250px;
+	}
+	.shop-card:hover {
+		box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+	}
+
+</style>
+
+<div class="row">
+	<div class="col-md-6">
+		<h1 class="pt-64 b" style="margin-top: 200px">Your favorite BBQ</h1>
+		<h3 class="pt-64" style="margin-top: 5px">Family Style Restaurant</h3>
+	</div>
+	<div class="col-md-6">
+		<img class="mr36" src="/images/food-bowl.png" alt="" height="550">
+	</div>
+</div>
+
+<section>
+	<h1 class="text-center">How It Works</h1>
+	<br><br><br><br>
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="mx-auto w-50">
+				<img src="/images/visit.png" alt="" height="120">
+				<br><br>
+				<h5>Visit our place</h5>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="mx-auto w-50">
+				<img src="/images/select.png" alt="" height="120">
+				<br><br>
+				<h5>Select an outlet</h5>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="mx-auto w-50">
+				<img src="/images/order.png" alt="" height="120">
+				<br><br>
+				<h5>Make your order</h5>
+			</div>
+		</div>
+	</div>
+</section>
+<br><br><br><br><br><br>
+<section>
+	<h1 class="text-center">Outlets</h1>
+	<br><br><br>
+
+	<div class="row">
+		<div id="shopParent" class="shops-parent d-flex flex-wrap mr-4">
+			<!-- <div class="card">
+					<img src="/images/greanbeans.png" class="card-img-top" alt="...">
+					<div class="card-body">
+					  <h5 class="card-title font-24 b">Green Beans</h5>
+					  <p class="card-text font-12">Pizza | Burger | Cake</p>
+					  <a href="#" class="btn btn-primary shop-btn">Show me</a>
+					</div>
+				</div> -->
+		</div>
+
+	</div>
+</section>
+
+<script>
+	function getShops(){
+		var request = $.ajax({
+			url: root + "/api/users/shops",
+			type: "GET",
+	
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+	            //"Authorization": 'Bearer ' + userDetails.accessToken
+			},
+		});
+	
+		request.done(function (data) {
+			for (var i = 0; i < data.length; i++) {
+				var shop = data[i];
+				var html = '<div class="shop-card shadow rounded m12">' +
+					'<img src=' + getImage(shop.image, "/images/sqrimg250.png") + ' class="card-img-top w250" alt="...">' +
+					'<div class="card-body">' +
+					'<h5 class="card-title font-24 b">' + shop.firstname + " " +shop.lastname + '</h5>' +
+					'<p class="card-text font-12">' + shop.description + '</p>' +
+					"<button class='btn btn-primary shop-btn' onclick='setShop("+ JSON.stringify(shop) +")'>Show me</button>" +
+					'</div>' +
+					'</div>';
+
+				$(".shops-parent").append(html);
+			}
+		});
+	
+		request.fail(function (jqXHR, textStatus) {
+			alert("Request failed: " + jqXHR.responseJSON.message);
+		});
+	}
+	getShops();
+
+	function setShop(shop){
+		selectedShop = shop;
+		window.localStorage.setItem("genericfosshop", JSON.stringify(shop));
+		$("#contents").load("/pages/shop.html");
+		window.localStorage.setItem("genericfospage", "shop");
+		scrollToTop();
+	}
+
+</script>

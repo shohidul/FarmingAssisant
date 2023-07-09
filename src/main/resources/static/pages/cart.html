@@ -1,0 +1,168 @@
+<br />
+<br />
+<br />
+<div class="row">
+    <div class="col-md-8 mx-auto">
+    	<div class="shadow rounded p-4">
+    		<h3 class="text-center">Your orders</h3>
+    		
+    		<div class="carts"></div>
+
+    	</div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /><br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /><br />
+<script>
+
+	
+	function getShops(){
+		var request = $.ajax({
+			url: root + "/api/users/shops",
+			type: "GET",
+	
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+	            //"Authorization": 'Bearer ' + userDetails.accessToken
+			},
+		});
+	
+		request.done(function (data) {
+			for (var i = 0; i < data.length; i++) {
+				var shop = data[i];
+				//console.log(shop.id);
+				for (let i = 0; i < localStorage.length; i++) {
+					var key = localStorage.key(i);
+					if(key.includes("genericfoscart")){
+						var shopId = key.slice("genericfoscart".length, key.length);
+						if(parseInt(shop.id) === parseInt(shopId)){
+							//console.log(shopId);
+							// set from local storage
+							var cartItems = window.localStorage.getItem("genericfoscart"+shopId);
+	
+							if (cartItems !== null) {
+								cartItems = JSON.parse(cartItems);
+								setCart(shop);
+								var subTotalAmt = 0;
+								var vatTotalAmt = 0;
+								for (var k = 0; k < cartItems.length; k++) {
+									var item = cartItems[k];
+
+									var itemHtml = setToCart(item);
+									
+									$(".carts").find(".cart-items").append(itemHtml);
+									
+									var disc = item.discountRate * item.price / 100;
+									var price = item.price - disc;
+									
+									subTotalAmt += price;
+									
+
+									var vat = item.vatRate * item.price / 100;
+									vatTotalAmt += vat;
+									
+								}	
+								
+								$(".carts").find(".subTotalAmtLbl-"+shopId).text("TK "+subTotalAmt);
+								$(".carts").find(".vatTotalAmtLbl-"+shopId).text("TK "+vatTotalAmt);
+								
+								var totalAmt = subTotalAmt + vatTotalAmt;
+							    $(".carts").find(".totalAmtLbl-"+shopId).text("TK "+totalAmt);
+							}
+						}
+					}
+					
+				}
+
+			}
+		});
+	
+		request.fail(function (jqXHR, textStatus) {
+			alert("Request failed: " + jqXHR.responseJSON.message);
+		});
+	}
+	getShops();
+	
+
+	function setCart(shop){ 
+
+		var html = '<div class="cart cart-'+ shop.id +'">'+
+						'<h4 class="">'+ shop.firstname + " " + shop.lastname +'</h4>'+
+						'<hr>'+
+						'<div class="cart-items"></div>' +
+						'<hr>'+
+						'<p class="d-flex justify-content-between"><small class="">Sub Total:</small><small class="subTotalAmtLbl-'+ shop.id +'">TK 0</small></p>'+
+						'<p class="d-flex justify-content-between"><small class="">Vat Total:</small><small class="vatTotalAmtLbl-'+ shop.id +'">TK 0</small></p>'+
+						'<p class="d-flex justify-content-between"><small class="b">Total:</small><small class="totalAmtLbl-'+ shop.id +' b">TK 0</small></p>'+
+						'<button class="btn btn-warning w-100" onclick="gotoCheckout('+shop+')"><small class="checkout-'+ shop.id +' b">CHECKOUT</small></button>'+
+					'</div>';
+		$(".carts").append(html);
+
+	}
+	
+	function setToCart(item){
+		var disc = item.discountRate * item.price / 100;
+		var price = item.price - disc;
+		
+		var itemHtml ="";
+		var itemElement = $(".carts").find(".cart-item-"+item.id);
+
+		if(itemElement.length > 0){
+			var qty = parseInt($(itemElement).find(".qty").text());
+			qty += 1;
+			$(itemElement).find(".qty").text(qty);
+			
+			var totPrice = price * qty;
+			$(itemElement).find(".price").text(totPrice);
+		}else{
+			
+			var hr = $(".carts").find(".cart-items").children().length > 0 ? '<hr>': "";
+			 itemHtml = '<div class="cart-item cart-item-'+ item.id +'">'+
+								hr +
+								'<input type="hidden" class="item-id" value="'+ item.id +'">'+
+								'<div class="d-flex align-items-center">'+
+									'<img src="' + item.image + '" class="w50">'+
+									'<div class="d-flex justify-content-between ml-4 w-100">'+
+										'<div>'+
+											'<p class="mb-0 card-title b">' + item.name + '</p>'+
+											'<small class="card-title mb-0 b text-danger"><small class="qty"> 1 </small> x <small class="price"> ' + price + ' </small></small>'+
+									/*'</div>'+
+										'<button class="btn cart-itm-close">'+
+											'<i class="fa-solid fa-xmark"></i>'+
+										'</button>'+
+									'</div>'+*/
+								'</div>'+
+							'</div>'						
+		}
+	    return itemHtml;
+	}
+
+	function gotoCheckout(shop){
+		window.localStorage.setItem("genericfosshop", JSON.stringify(shop));
+		//$(".carts").click(".checkout", function(){
+			if (userDetails !== null) {
+				$("#contents").load("/pages/checkout.html");
+				window.localStorage.setItem("genericfospage", "checkout");
+				scrollToTop();
+			}
+			else{
+				alert("You have to log in first.");
+				$("#contents").load("/pages/login.html");
+				window.localStorage.setItem("genericfospage", "login");
+				scrollToTop();
+			}
+		//});
+	}
+
+</script>

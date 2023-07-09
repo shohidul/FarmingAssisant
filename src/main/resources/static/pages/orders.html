@@ -1,0 +1,70 @@
+	<br />
+<div class="row">
+
+	<div class="col-md-12">
+		<h4>Orders</h4>
+		<br /><br />
+		<table class="table">
+		  <thead>
+		    <tr>
+		      <th scope="col">Order</th>
+		      <th scope="col">Date</th>
+		      <th scope="col">Status</th>
+		      <th scope="col">Total</th>
+		      <th scope="col">Actions</th>
+		    </tr>
+		  </thead>
+		  <tbody id="tabelBody">
+
+		  </tbody>
+		</table>
+	</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /><br />
+<script>
+var calltype = userDetails.roles[0] === "ROLE_USER" ? "bycustomerid" : "byshopid";
+console.log(calltype);
+console.log(userDetails.id);
+var request = $.ajax({
+	url: root + "/api/invoices/"+calltype,
+	type: "POST",
+	data: JSON.stringify({
+		id: userDetails.id
+	}),
+	headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json',
+        "Authorization": 'Bearer ' + userDetails.accessToken
+	},
+});
+
+request.done(function (invoice) {
+	//console.log(invoice);
+	for (var i = 0; i < invoice.length; i++) {
+	    var html = 	'<tr>'+
+				      '<th>GFOS'+invoice[i].id+'</th>'+
+				      '<td>'+invoice[i].dateCreated.slice(0,10)+'</td>'+
+				      '<td>'+invoice[i].statusOrder+'</td>'+
+				      '<td>'+(invoice[i].netAmt+invoice[i].integer1)+'</td>'+
+				      "<td><button class='btn btn-primary' onclick='gotoInvoice("+ JSON.stringify(invoice[i]) +")'>Invoice</button></td>"+
+				    '</tr>';
+		$("#tabelBody").append(html);
+	}
+});
+
+request.fail(function (jqXHR, textStatus) {
+	alert("Request failed: " + jqXHR.responseJSON.message);
+});
+
+function gotoInvoice(invoice){
+	//console.log(invoice);
+	window.localStorage.setItem("genericfosinv", invoice.id);
+	$("#contents").load("/pages/invoice.html");
+	window.localStorage.setItem("genericfospage", "invoice");
+}
+</script>

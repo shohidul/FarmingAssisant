@@ -1,0 +1,183 @@
+<style>
+	.login-container {
+		margin-top: 5%;
+		margin-bottom: 5%;
+	}
+
+	.login-form-1 {
+		padding: 5%;
+		box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+	}
+
+	.login-form-1 h3 {
+		text-align: center;
+		color: #333;
+	}
+
+	.login-form-2 {
+		padding: 5%;
+		background: #ba110a;
+		box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+	}
+
+	.login-form-2 h3 {
+		text-align: center;
+		color: #fff;
+	}
+
+	.login-container form {
+		padding: 10%;
+	}
+
+	.btnSubmit {
+		width: 50%;
+		border-radius: 1rem;
+		padding: 1.5%;
+		border: none;
+		cursor: pointer;
+	}
+
+	.login-form-1 .btnSubmit {
+		font-weight: 600;
+		color: #fff;
+		background-color: #ba110a;
+	}
+
+	.login-form-2 .btnSubmit {
+		font-weight: 600;
+		color: #ba110a;
+		background-color: #fff;
+	}
+
+	.login-form-2 .ForgetPwd {
+		color: #fff;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.login-form-1 .ForgetPwd {
+		color: #ba110a;
+		font-weight: 600;
+		text-decoration: none;
+	}
+</style>
+<br><br>
+<div class="container login-container">
+	<div class="row">
+		<div class="col-md-6 login-form-1">
+			<h3>Login</h3>
+			<form id="signinForm">
+				<div class="form-group">
+					<input type="text" class="form-control" id="userName" placeholder="Username *" value="shohidul" />
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="userPass" placeholder="Your Password *"
+						value="123456" />
+				</div>
+				<div class="form-group">
+					<input type="button" class="btnSubmit" id="btnSignin" value="Login" />
+				</div>
+				<div class="form-group">
+					<a href="#" class="ForgetPwd">Forget Password?</a>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-6 login-form-2">
+			<h3>Register</h3>
+			<form id="signupForm">
+				<div class="form-group">
+					<input type="text" class="form-control" id="userName" placeholder="Username *" value="" />
+				</div>
+				<div class="form-group">
+					<input type="email" class="form-control" id="userEmail" placeholder="Your Email *" value="" />
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" id="userFName" placeholder="First Name" value="" />
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" id="userLName" placeholder="Last Name" value="" />
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="userPass" placeholder="Your Password *" value="" />
+				</div>
+				<div class="form-group">
+					<select class="custom-select" id="roleSelect">
+						<option selected value="user">User</option>
+						<option value="mod">Shop Manager</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<input type="button" class="btnSubmit" id="btnSignup" value="Register" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$("#btnSignin").click(function () {
+		var userName = $("#signinForm").find("#userName").val();
+		var userPass = $("#signinForm").find("#userPass").val();
+
+		var request = $.ajax({
+			url: root + "/api/auth/signin",
+			type: "POST",
+			data: JSON.stringify({
+				username: userName,
+				password: userPass,
+			}),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+		});
+
+		request.done(function (msg) {
+			console.log(msg);
+			window.localStorage.setItem("genericfosjwt", JSON.stringify(msg));
+			window.localStorage.setItem("genericfospage", "start");
+			window.location.replace("/");
+		});
+
+		request.fail(function (jqXHR, textStatus) {
+			alert("Request failed: " + "Username or password is incorrect!");
+		});
+	});
+	$("#btnSignup").click(function () {
+		var userName = $("#signupForm").find("#userName").val();
+		var userEmail = $("#signupForm").find("#userEmail").val();
+		var userFName = $("#signupForm").find("#userFName").val();
+		var userLName = $("#signupForm").find("#userLName").val();
+		var userPass = $("#signupForm").find("#userPass").val();
+		var roleSelect = $("#signupForm").find("#roleSelect").val();
+		var type = roleSelect === "mod" ? "shop" : "user"
+
+		var request = $.ajax({
+			url: root + "/api/auth/signup",
+			type: "POST",
+			data: JSON.stringify({
+				type: type,
+				username: userName,
+				firstname: userFName,
+				lastname: userLName,
+				password: userPass,
+				email: userEmail,
+				role: [roleSelect]
+			}),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+		});
+
+		request.done(function (data) {
+			alert(data.message);
+			$('#signupForm').trigger("reset");
+		});
+
+		request.fail(function (jqXHR, textStatus) {
+			alert("Request failed: " + jqXHR.responseJSON.message);
+		});
+	});
+</script>
