@@ -15,9 +15,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Boolean existsByUsername(String username);
   Boolean existsByEmail(String email);
   
-	@Query(value = "SELECT * FROM users WHERE type='shop'", nativeQuery = true)
-	List<User> getShopList();
-	
-	@Query(value = "SELECT * FROM users WHERE type='shop' and id=?", nativeQuery = true)
-	User getShopById(Long id);
+//	@Query(value = "SELECT * FROM users WHERE type='shop'", nativeQuery = true)
+//	List<User> getShopList();
+//	
+//	@Query(value = "SELECT * FROM users WHERE type='shop' and id=?", nativeQuery = true)
+//	User getShopById(Long id);
 }

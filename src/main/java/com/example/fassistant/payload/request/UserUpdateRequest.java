@@ -1,6 +1,5 @@
 package com.example.fassistant.payload.request;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
  
@@ -8,31 +7,25 @@ public class UserUpdateRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
-    
 	@Size(max = 120)
 	private String password;
-	
 	@Size(max = 20)
-	private String firstname;
-	
+	private String name;
 	@Size(max = 20)
-	private String lastname;
-	private String description;
-	
+	private String nid;
+	private String tin;
 	@Size(max = 20)
-	private String mobile;
-	
-	@Column(name = "address")
-	private String address;
-	
-    public String getUsername() {
-        return username;
-    }
- 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    
+	private String phone;
+	private String location;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -41,43 +34,43 @@ public class UserUpdateRequest {
 		this.password = password;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getNid() {
+		return nid;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setNid(String nid) {
+		this.nid = nid;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getTin() {
+		return tin;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setTin(String tin) {
+		this.tin = tin;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getLocation() {
+		return location;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }

@@ -48,19 +48,19 @@ public class UserController {
 		return ResponseEntity.ok().body(user);
 	}
 	
-	@GetMapping("/shops")
-	public ResponseEntity<?> getShops() {
-		List<User> shops = userRepository.getShopList();
-		return ResponseEntity.ok().body(shops);
-	}
+//	@GetMapping("/shops")
+//	public ResponseEntity<?> getShops() {
+//		List<User> shops = userRepository.getShopList();
+//		return ResponseEntity.ok().body(shops);
+//	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	@PostMapping("/shopbyid")
-	public ResponseEntity<?> getShopById(@Valid @RequestBody Map<String, String> payload) {
-
-		User user = userRepository.getShopById(Long.valueOf(payload.get("id")));
-		return ResponseEntity.ok().body(user);
-	}
+//	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+//	@PostMapping("/shopbyid")
+//	public ResponseEntity<?> getShopById(@Valid @RequestBody Map<String, String> payload) {
+//
+//		User user = userRepository.getShopById(Long.valueOf(payload.get("id")));
+//		return ResponseEntity.ok().body(user);
+//	}
 	
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@PostMapping
@@ -70,40 +70,40 @@ public class UserController {
 
 		Optional<User> optional = userRepository.findByUsername(userDetails.getUsername());
 		User user = optional.get();
-		user.setFirstname(signUpRequest.getFirstname());
-		user.setLastname(signUpRequest.getLastname());
-		user.setDescription(signUpRequest.getDescription());
-		user.setAddress(signUpRequest.getAddress());
-		user.setMobile(signUpRequest.getMobile());
+		user.setName(signUpRequest.getName());
+		user.setNid(signUpRequest.getNid());
+		user.setPhone(signUpRequest.getPhone());
+		user.setTin(signUpRequest.getTin());
+		user.setLocation(signUpRequest.getLocation());
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
 	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	@PostMapping("/updatecover")
-	public ResponseEntity<?> updateCover(@Valid @RequestBody Map<String, String> payload) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
-
-		Optional<User> optional = userRepository.findByUsername(userDetails.getUsername());
-		User user = optional.get();
-		user.setImageCover(payload.get("imageCover"));
-		userRepository.save(user);
-		return ResponseEntity.ok(new MessageResponse("Cover updated successfully!"));
-	}
+//	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+//	@PostMapping("/updatecover")
+//	public ResponseEntity<?> updateCover(@Valid @RequestBody Map<String, String> payload) {
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
+//
+//		Optional<User> optional = userRepository.findByUsername(userDetails.getUsername());
+//		User user = optional.get();
+//		user.setImageCover(payload.get("imageCover"));
+//		userRepository.save(user);
+//		return ResponseEntity.ok(new MessageResponse("Cover updated successfully!"));
+//	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	@PostMapping("/updateimage")
-	public ResponseEntity<?> updateImage(@Valid @RequestBody Map<String, String> payload) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
-
-		Optional<User> optional = userRepository.findByUsername(userDetails.getUsername());
-		User user = optional.get();
-		user.setImage(payload.get("image"));
-		userRepository.save(user);
-		return ResponseEntity.ok(new MessageResponse("Profile image updated successfully!"));
-	}
+//	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+//	@PostMapping("/updateimage")
+//	public ResponseEntity<?> updateImage(@Valid @RequestBody Map<String, String> payload) {
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
+//
+//		Optional<User> optional = userRepository.findByUsername(userDetails.getUsername());
+//		User user = optional.get();
+//		user.setImage(payload.get("image"));
+//		userRepository.save(user);
+//		return ResponseEntity.ok(new MessageResponse("Profile image updated successfully!"));
+//	}
 	
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@PostMapping("/updatepassword")

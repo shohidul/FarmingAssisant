@@ -287,19 +287,10 @@ li a.active {
 </head>
 
 <body>
-	<nav class="container navbar navbar-light bg-light pt-0 sticky-top">
-		<a class="navbar-brand" id="logo" href="/"> <img
-			src="/../images/logo.png" width="150" alt="">
-		</a>
-		<ul class="nav justify-content-end">
-			<li class="nav-item"><a class="nav-link" href="#siteFooter">About us</a></li>
-			<li class="nav-item"><a class="nav-link active" id="start"
-				href="#">Start</a></li>
-			<li class="nav-item"><a class="nav-link" id="shops" href="#">Outlets</a>
-			</li>
-			<li class="nav-item"><a class="nav-link" href="#siteFooter">Find us</a></li>
+	<nav class="container-fluid navbar navbar-light bg-light pt-0 sticky-top">
+		<ul class="nav justify-content-end" style="margin: auto;">
 			<li class="nav-item"><a class="nav-link" href="#" id="login">Log
-					In</a></li>
+				In</a></li>
 
 			<li class="nav-item dropdown d-none" id="userDropdown"><a
 				class="nav-link dropdown-toggle" id="userName"
@@ -308,12 +299,33 @@ li a.active {
 				<div class="dropdown-menu">
 					<a class="dropdown-item" id="cart" href="#cart">Cart</a> <a
 						class="dropdown-item" id="orders" href="#orders">Orders</a> <a
-						class="dropdown-item" id="profile" href="#profile">Profile</a>
+						class="dropdown-item" id="profile" href="#profile">User Profile</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#" id="signout">Sign out</a>
-				</div></li>
-
+				</div>
+			</li>
+			<!-- <li class="nav-item"><a class="nav-link" href="#siteFooter">About us</a></li> -->
+			<li class="nav-item"><a class="nav-link" id="cropInformation"
+					href="#">Crop Information</a></li>
+			<li class="nav-item"><a class="nav-link" id="weatherUpdates"
+					href="#">Weather Updates</a></li>
+			<li class="nav-item"><a class="nav-link" id="taskMgt"
+					href="#">Tasks</a></li>
+			<li class="nav-item"><a class="nav-link" id="marketPrice"
+					href="#">Market Price</a></li>
+			<li class="nav-item"><a class="nav-link" id="knowledgeCorner"
+					href="#">Knowledge Corner</a></li>
+			<li class="nav-item"><a class="nav-link" id="pestControl"
+					href="#">Pest Control</a></li>
+			<!-- <li class="nav-item"><a class="nav-link active" id="start"
+				href="#">Start</a></li> -->
+			<!-- <li class="nav-item"><a class="nav-link" id="shops" href="#">Outlets</a> -->
+			<!-- </li> -->
+			<!-- <li class="nav-item"><a class="nav-link" href="#siteFooter">Find us</a></li> -->
+			
+			<li class="nav-item"><a class="nav-link active" href="#" id="start">Dashboard</a></li>
 		</ul>
+		<!-- <a class="navbar-brand" id="logo" href="/">Dashboard</a> -->
 	</nav>
 	<div class="container-xl">
 		<div id="contents"></div>
@@ -330,10 +342,10 @@ li a.active {
 				<div class="col-sm-12 col-md-6">
 					<h6>About</h6>
 					<p class="text-justify">
-						This is a project we have developed for the course requirements of PGD-IT in Jahangirnagar University.
+						This is a project we have developed for the course requirements of [YOUR INFO].
 						We have used Java in the back-end with Spring Boot Security and JWT Authentication. HTML5, CSS3, Bootstrap 4.6 and JQuery has been used in the front-end.
 						<br />
-						Developers: <a href="https://shohidul.github.io" target="_blank">Shohidul Islam</a> & <a href="#">Sadek Mahmood</a>
+						Developers: <a href="#" target="_blank">[YOUR NAME]</a> 
 					</p>
 				</div>
 
@@ -342,13 +354,11 @@ li a.active {
 					<ul class="footer-links">
 						<li>Dhaka, Bangladesh</li>
 						<li><a href="tel:0123456789">Mobile: 0123456789</a></li>
-						<li><a href="mailto:support@gfos.com.bd">Email: support@gfos.com.bd</a></li>
+						<li><a href="mailto:support@gfos.com.bd">Email: support@fassistant.com.bd</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-6 col-md-3">
-					<a class="navbar-brand float-right" id="logo" href="/"> <img
-						src="/../images/logo.png" width="150" alt="">
-					</a>
+					<a class="navbar-brand float-right" id="logo" href="/"> Farming Assistant</a>
 				</div>
 			</div>
 			<hr>
@@ -357,7 +367,7 @@ li a.active {
 			<div class="row">
 				<div class="col-md-8 col-sm-6 col-xs-12">
 					<p class="copyright-text">
-						Copyright &copy; 2022 All Rights Reserved by <a href="#">BBQ</a>.
+						Copyright &copy; 2022 All Rights Reserved by <a href="#">Farming Assistant</a>.
 					</p>
 				</div>
 
@@ -392,6 +402,10 @@ li a.active {
 		$("#logo").click(function() {
 			$("#contents").load("/pages/start.html");
 			window.localStorage.setItem("genericfospage", "start");
+		});
+		$("#userProfile").click(function() {
+			$("#contents").load("/pages/userProfile.html");
+			window.localStorage.setItem("genericfospage", "userProfile");
 		});
 		$("#start").click(function() {
 			$("#contents").load("/pages/start.html");

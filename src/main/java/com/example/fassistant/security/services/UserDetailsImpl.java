@@ -22,19 +22,22 @@ public class UserDetailsImpl implements UserDetails {
 	private String email;
 	@JsonIgnore
 	private String password;
-	private String firstname;
-	private String lastname;
-	private String mobile;
+	private String name;
+	private String nid;
+	private String phone;
+	private String tin;
+	private String location;
 	private Collection<? extends GrantedAuthority> authorities;
-	public UserDetailsImpl(Long id, String username, String email, String password, String firstname, String lastname, String mobile,
+	public UserDetailsImpl(Long id, String username, String email, String password, String name, String nid, String phone, String tin, String location,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.mobile = mobile;
+		this.name = name;
+		this.nid = nid;
+		this.phone = phone;
+		this.location = location;
 		this.authorities = authorities;
 	}
 	public static UserDetailsImpl build(User user) {
@@ -46,9 +49,11 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(), 
-				user.getFirstname(), 
-				user.getLastname(), 
-				user.getMobile(), 
+				user.getName(), 
+				user.getNid(), 
+				user.getPhone(), 
+				user.getTin(),
+				user.getLocation(),
 				authorities);
 	}
 	@Override
@@ -69,14 +74,20 @@ public class UserDetailsImpl implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
-	public String getFirstname() {
-		return firstname;
+	public String getName() {
+		return name;
 	}
-	public String getLastname() {
-		return lastname;
+	public String getNid() {
+		return nid;
 	}
-	public String getMobile() {
-		return mobile;
+	public String getPhone() {
+		return phone;
+	}
+	public String getTin() {
+		return tin;
+	}
+	public String getLocation() {
+		return location;
 	}
 	@Override
 	public boolean isAccountNonExpired() {

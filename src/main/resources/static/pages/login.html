@@ -30,29 +30,17 @@
 	}
 
 	.btnSubmit {
-		width: 50%;
-		border-radius: 1rem;
+		width: 47%;
+		border-radius: 4px;
 		padding: 1.5%;
 		border: none;
 		cursor: pointer;
+		margin: 6px;
 	}
 
 	.login-form-1 .btnSubmit {
 		font-weight: 600;
 		color: #fff;
-		background-color: #ba110a;
-	}
-
-	.login-form-2 .btnSubmit {
-		font-weight: 600;
-		color: #ba110a;
-		background-color: #fff;
-	}
-
-	.login-form-2 .ForgetPwd {
-		color: #fff;
-		font-weight: 600;
-		text-decoration: none;
 	}
 
 	.login-form-1 .ForgetPwd {
@@ -64,7 +52,8 @@
 <br><br>
 <div class="container login-container">
 	<div class="row">
-		<div class="col-md-6 login-form-1">
+		<div class="col-md-2"></div>
+		<div class="col-md-8 login-form-1">
 			<h3>Login</h3>
 			<form id="signinForm">
 				<div class="form-group">
@@ -75,108 +64,80 @@
 						value="123456" />
 				</div>
 				<div class="form-group">
-					<input type="button" class="btnSubmit" id="btnSignin" value="Login" />
+					<input type="button" class="btn btn-primary btnSubmit" id="btnSignin" value="Login" />
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-primary btnSubmit" data-toggle="modal" data-target="#exampleModal">
+						Registration
+					</button>
 				</div>
-				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-					Registration
-				</button>
-  
 				<div class="form-group">
 					<a href="#" class="ForgetPwd">Forget Password?</a>
 				</div>
 			</form>
 		</div>
-		<div class="col-md-6 login-form-2">
-			<h3>Register</h3>
-			<form id="signupForm">
-				<div class="form-group">
-					<input type="text" class="form-control" id="userName" placeholder="Username *" value="" />
-				</div>
-				<div class="form-group">
-					<input type="email" class="form-control" id="userEmail" placeholder="Your Email *" value="" />
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="userFName" placeholder="First Name" value="" />
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="userLName" placeholder="Last Name" value="" />
-				</div>
-				<div class="form-group">
-					<input type="password" class="form-control" id="userPass" placeholder="Your Password *" value="" />
-				</div>
-				<div class="form-group">
-					<select class="custom-select" id="roleSelect">
-						<option selected value="user">User</option>
-						<option value="mod">Shop Manager</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<input type="button" class="btnSubmit" id="btnSignup" value="Register" />
-				</div>
-			</form>
-		</div>
+		<div class="col-md-2"></div>
 	</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 	<div class="modal-content">
-		<div class="modal-header">
-		<h5 class="modal-title" id="exampleModalLabel">Registration</h5>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		</div>
-		<div class="container modal-body">
-			<form>
+		<form id="signupForm">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Registration</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="container modal-body">
 				<div class="form-group row">
-					<label for="staticEmail" class="col-sm-2 col-form-label">Name:</label>
+					<label for="name" class="col-sm-2 col-form-label">Name:</label>
 					<div class="col-sm-4">
-					<input type="text" class="form-control" id="staticEmail" value="">
+					<input type="text" class="form-control" id="name" value="">
 					</div>
-					<label for="staticEmail" class="col-sm-2 col-form-label">NID:</label>
+					<label for="nid" class="col-sm-2 col-form-label">NID:</label>
 					<div class="col-sm-4">
-					<input type="text" class="form-control" id="staticEmail" value="">
+					<input type="text" class="form-control" id="nid" value="">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="staticEmail" class="col-sm-2 col-form-label">Phone Num:</label>
+					<label for="phone" class="col-sm-2 col-form-label">Phone Num:</label>
 					<div class="col-sm-4">
-					<input type="text" class="form-control" id="staticEmail" value="">
+					<input type="text" class="form-control" id="phone" value="">
 					</div>
-					<label for="staticEmail" class="col-sm-2 col-form-label">TIN:</label>
+					<label for="tin" class="col-sm-2 col-form-label">TIN:</label>
 					<div class="col-sm-4">
-					<input type="text" class="form-control" id="staticEmail" value="">
-					</div>
-				</div>
-				</form>
-				<div class="form-group row">
-					<label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
-					<div class="col-sm-4">
-					<input type="email" class="form-control" id="staticEmail" value="email@example.com">
-					</div>
-					<label for="staticEmail" class="col-sm-2 col-form-label">Username:</label>
-					<div class="col-sm-4">
-					<input type="text" class="form-control" id="staticEmail" value="">
+					<input type="text" class="form-control" id="tin" value="">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-2 col-form-label">Farm Location:</label>
+					<label for="email" class="col-sm-2 col-form-label">Email:</label>
 					<div class="col-sm-4">
-					<input type="text" class="form-control" id="inputPassword">
+					<input type="email" class="form-control" id="email" value="email@example.com">
+					
 					</div>
-					<label for="inputPassword" class="col-sm-2 col-form-label">Password:</label>
+					<label for="username" class="col-sm-2 col-form-label">Username:</label>
 					<div class="col-sm-4">
-					<input type="password" class="form-control" id="inputPassword">
+					<input type="text" class="form-control" id="username" value="">
+					<p id="usernameError" class="text-danger"></p>
 					</div>
 				</div>
-				</form>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-primary">Submit</button>
-			<button type="button" class="btn btn-danger" >Reset</button>
-		</div>
+				<div class="form-group row">
+					<label for="location" class="col-sm-2 col-form-label">Farm Location:</label>
+					<div class="col-sm-4">
+					<input type="text" class="form-control" id="location">
+					</div>
+					<label for="password" class="col-sm-2 col-form-label">Password:</label>
+					<div class="col-sm-4">
+					<input type="password" class="form-control" id="password">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btnSignup">Submit</button>
+				<button type="reset" class="btn btn-danger" id="btnReset">Reset</button>
+			</div>
+		</form>
 	</div>
 	</div>
 </div>
@@ -186,6 +147,10 @@
 		var userName = $("#signinForm").find("#userName").val();
 		var userPass = $("#signinForm").find("#userPass").val();
 
+		doLogin (userName, userPass);
+	});
+
+	function doLogin (userName, userPass){
 		var request = $.ajax({
 			url: root + "/api/auth/signin",
 			type: "POST",
@@ -209,27 +174,33 @@
 		request.fail(function (jqXHR, textStatus) {
 			alert("Request failed: " + "Username or password is incorrect!");
 		});
-	});
+	}
+
+
 	$("#btnSignup").click(function () {
-		var userName = $("#signupForm").find("#userName").val();
-		var userEmail = $("#signupForm").find("#userEmail").val();
-		var userFName = $("#signupForm").find("#userFName").val();
-		var userLName = $("#signupForm").find("#userLName").val();
-		var userPass = $("#signupForm").find("#userPass").val();
-		var roleSelect = $("#signupForm").find("#roleSelect").val();
-		var type = roleSelect === "mod" ? "shop" : "user"
+		var name = $("#signupForm").find("#name").val();
+		var nid = $("#signupForm").find("#nid").val();
+		var phone = $("#signupForm").find("#phone").val();
+		var tin = $("#signupForm").find("#tin").val();
+		var email = $("#signupForm").find("#email").val();
+		var username = $("#signupForm").find("#username").val();
+		var location = $("#signupForm").find("#location").val();
+		var password = $("#signupForm").find("#password").val();
+		
 
 		var request = $.ajax({
 			url: root + "/api/auth/signup",
 			type: "POST",
 			data: JSON.stringify({
-				type: type,
-				username: userName,
-				firstname: userFName,
-				lastname: userLName,
-				password: userPass,
-				email: userEmail,
-				role: [roleSelect]
+				name: name,
+				nid: nid,
+				phone: phone,
+				tin: tin,
+				email: email,
+				username: username,
+				location: location,
+				password: password,
+				role: ["user"]
 			}),
 			headers: {
 				'Accept': 'application/json',
@@ -238,12 +209,18 @@
 		});
 
 		request.done(function (data) {
-			alert(data.message);
-			$('#signupForm').trigger("reset");
+			doLogin (username, password);
+			// alert(data.message);
+			// $('#signupForm').trigger("#btnReset");
 		});
 
 		request.fail(function (jqXHR, textStatus) {
-			alert("Request failed: " + jqXHR.responseJSON.message);
+			// alert("Request failed: " + jqXHR.responseJSON.message);
+			$("#usernameError").text(jqXHR.responseJSON.message);
 		});
+	});
+
+	$("#btnReset").click(function (){
+		$("#usernameError").hide();
 	});
 </script>

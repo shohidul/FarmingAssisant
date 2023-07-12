@@ -26,22 +26,16 @@ public class User {
 	@NotBlank
 	@Size(max = 120)
 	private String password;
-	@Column(name = "type")
-	private String type;
 	@Size(max = 20)
-	private String firstname;
+	private String name;
+	@Column(name = "nid")
+	private String nid;
 	@Size(max = 20)
-	private String lastname;
-	@Column(name = "description")
-	private String description;
-	@Size(max = 20)
-	private String mobile;
-	@Column(name = "address")
-	private String address;
-	@Column(name = "image")
-	private String image;
-	@Column(name = "image_cover")
-	private String imageCover;
+	private String phone;
+	@Column(name = "tin")
+	private String tin;
+	@Column(name = "location")
+	private String location;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -78,56 +72,36 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}	
+	public String getName() {
+		return name;
 	}
-	public String getType() {
-		return type;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public String getNid() {
+		return nid;
 	}
-	public String getFirstname() {
-		return firstname;
+	public void setNid(String nid) {
+		this.nid = nid;
 	}
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public String getPhone() {
+		return phone;
 	}
-	public String getLastname() {
-		return lastname;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public String getTin() {
+		return tin;
 	}
-
-	public String getDescription() {
-		return description;
+	public void setTin(String tin) {
+		this.tin = tin;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public String getLocation() {
+		return location;
 	}
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getImage() {
-		return image;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
-	public String getImageCover() {
-		return imageCover;
-	}
-	public void setImageCover(String imageCover) {
-		this.imageCover = imageCover;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	public Set<Role> getRoles() {
 		return roles;

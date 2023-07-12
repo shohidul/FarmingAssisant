@@ -67,10 +67,10 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(new MessageResponse("Please, fill up all the fields!"));
 		}
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+			return ResponseEntity.badRequest().body(new MessageResponse("Please choose a different username this one is taken!"));
 		}
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+			return ResponseEntity.badRequest().body(new MessageResponse("Please choose a different this email is already in use!"));
 		}
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
@@ -101,9 +101,11 @@ public class AuthController {
 				}
 			});
 		}
-		user.setFirstname(signUpRequest.getFirstname());
-		user.setLastname(signUpRequest.getLastname());
-		user.setType(signUpRequest.getType());
+		user.setName(signUpRequest.getName());
+		user.setNid(signUpRequest.getNid());
+		user.setPhone(signUpRequest.getPhone());
+		user.setTin(signUpRequest.getTin());
+		user.setLocation(signUpRequest.getLocation());
 		user.setRoles(roles);
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
