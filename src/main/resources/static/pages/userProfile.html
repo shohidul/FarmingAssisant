@@ -61,32 +61,37 @@
 	<div class="row">
 	    <div class="col-md-6">
 	        <form>
+				  
 	            <div class="form-group row">
 	                <label for="userName" class="form-control-sm col-sm-4">Username</label>
 	                <input type="text" class="form-control form-control-sm col-sm-6" disabled id="userName" aria-describedby="Username">
 	            </div>
 	            <div class="form-group row">
-	                <label for="firstName" class="form-control-sm form-control-sm col-sm-4">First Name</label>
-	                <input type="text" class="form-control form-control-sm col-sm-6" id="firstName" aria-describedby="First Name">
+	                <label for="name" class="form-control-sm form-control-sm col-sm-4">Name</label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="name" aria-describedby="Name">
 	            </div>
 	            <div class="form-group row">
-	                <label for="lastName" class="form-control-sm col-sm-4">Last Name</label>
-	                <input type="text" class="form-control form-control-sm col-sm-6" id="lastName" aria-describedby="Last Name">
+	                <label for="phone" class="form-control-sm col-sm-4">Phone num </label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="phone" aria-describedby="phone">
 	            </div>
 	            <div class="form-group row">
-	                <label for="desc" class="form-control-sm col-sm-4">Description</label>
-	                <input type="text" class="form-control form-control-sm col-sm-6" id="desc" aria-describedby="Description">
+	                <label for="email" class="form-control-sm col-sm-4">Email </label>
+	                <input type="email" class="form-control form-control-sm col-sm-6" id="email" aria-describedby="Email">
 	            </div>
 	            <div class="form-group row">
-	                <label for="mobile" class="form-control-sm col-sm-4">Mobile</label>
-	                <input type="text" class="form-control form-control-sm col-sm-6" id="mobile" aria-describedby="Mobile">
+	                <label for="location" class="form-control-sm col-sm-4">Farm location </label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="location" aria-describedby="Farm location">
 	            </div>
 	            <div class="form-group row">
-	                <label for="address" class="form-control-sm col-sm-4">Address</label>
-	                <textarea class="form-control form-control-sm col-sm-6" id="address" aria-describedby="Address"></textarea>
+	                <label for="nid" class="form-control-sm col-sm-4">NID </label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="nid" aria-describedby="NID">
+	            </div>
+	            <div class="form-group row">
+	                <label for="tin" class="form-control-sm col-sm-4">TIN </label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="tin" aria-describedby="TIN">
 	            </div>
 				<div class="form-group row">
-					<label for="updatePassword" class="form-control-sm col-sm-4"></label>
+					<label for="updateUserdetails" class="form-control-sm col-sm-4"></label>
 					<div class="col-sm-6 p-0">
 	            		<button type="button" class="btn btn-primary float-right" id="updateUserdetails">Save</button>
 	            	</div>
@@ -377,12 +382,15 @@
 		});
 
 		request.done(function (data) {
+			console.log(">>>>>>");
+			console.log(data);
 		    $("#contents").find("#userName").val(data.username);
-		    $("#contents").find("#firstName").val(data.firstname);
-		    $("#contents").find("#lastName").val(data.lastname);
-		    $("#contents").find("#desc").val(data.description);
-		    $("#contents").find("#mobile").val(data.mobile);
-		    $("#contents").find("#address").val(data.address);
+		    $("#contents").find("#name").val(data.name);
+		    $("#contents").find("#phone").val(data.phone);
+		    $("#contents").find("#email").val(data.email);
+		    $("#contents").find("#location").val(data.location);
+		    $("#contents").find("#nid").val(data.nid);
+		    $("#contents").find("#tin").val(data.tin);
 		    var imageCover = data.imageCover;
 		    if(imageCover != null){
 		    	$("#cvrPreview").css('background-image', 'url(' + imageCover +')');
@@ -406,21 +414,23 @@
 	getUser();
 		
 	$("#updateUserdetails").click(function () {
-		var firstName = $("#contents").find("#firstName").val();
-		var lastName = $("#contents").find("#lastName").val();
-		var desc = $("#contents").find("#desc").val();
-		var address = $("#contents").find("#address").val();
-		var mobile = $("#contents").find("#mobile").val();
+		var name = $("#contents").find("#name").val();
+		var phone = $("#contents").find("#phone").val();
+		var email = $("#contents").find("#email").val();
+		var location = $("#contents").find("#location").val();
+		var nid = $("#contents").find("#nid").val();
+		var tin = $("#contents").find("#tin").val();
 
 		var request = $.ajax({
 			url: root + "/api/users",
 			type: "POST",
 			data: JSON.stringify({
-				firstname: firstName,
-				lastname: lastName,
-				description: desc,
-				address: address,
-				mobile: mobile,
+				name: name,
+				phone: phone,
+				email: email,
+				location: location,
+				nid: nid,
+				tin: tin,
 			}),
 			headers: {
 				'Accept': 'application/json',
