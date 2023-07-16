@@ -21,14 +21,14 @@
 	}
 
 </style>
-
+<br>
 <div class="row">
-	<div class="col-md-4">
+	<div id="main" class="mx-auto " style="width: 75%;height:500px;"></div>
+	<!-- <div class="col-md-4">
 		<h1 class="pt-64 b" style="margin-top: 100px">Farming Assistant</h1>
 		<h3 class="pt-64" style="margin-top: 5px">Grow green digitally</h3>
 
 		<ul class="list-group list-group-flush">
-			<!-- <li class="list-group-item"><a href="">User Registration</a></li> -->
 			<li class="list-group-item"><a href="">Dashboard</a></li>
 			<li class="list-group-item"><a href="">Crop Information</a></li>
 			<li class="list-group-item"><a href="">Task Management & Schedule Reminder</a></li>
@@ -39,6 +39,25 @@
 	</div>
 	<div class="col-md-8">
 		<img class="mr36 float-right" src="/images/food-bowl.png" alt="" height="550">	  
+	</div> -->
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<form>
+		  <div class="form-row">
+		  	<div class="col-md-3"></div>
+		    <div class="col-md-6 mb-3">
+		      <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Write your experience here..." rows="3"></textarea>
+		    </div>
+		    <div class="col-md-3"></div>
+		  </div>
+		  <div class="form-row">
+		  <div class="col-md-3"></div>
+		  <div class="col-md-6"><button class="btn btn-primary" type="submit">Submit</button></div>
+		  <div class="col-md-3"></div>
+		  	
+		  </div>
+		</form>
 	</div>
 </div>
 
@@ -89,6 +108,37 @@
 
 	</div>
 </section> -->
+
+
+<script type="text/javascript">
+  // Initialize the echarts instance based on the prepared dom
+  var myChart = echarts.init(document.getElementById('main'));
+
+  // Specify the configuration items and data for the chart
+  var option = {
+    title: {
+      text: 'Key metrics'
+    },
+    tooltip: {},
+    legend: {
+      data: ['Bars']
+    },
+    xAxis: {
+      data: ['Crop Growth', 'Weather Condition', 'Market Prices', 'Livestock']
+    },
+    yAxis: {},
+    series: [
+      {
+        name: 'sales',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+      }
+    ]
+  };
+
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
+</script>
 
 <script>
 	// function getShops(){
