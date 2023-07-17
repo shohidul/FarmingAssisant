@@ -1,0 +1,327 @@
+
+    <style>
+        .parent {
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .card {
+            background-color: #ffffff;
+            max-height: 175px;
+            width: 400px;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(5, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        .card:hover{
+            box-shadow: 0 5px 50px rgba(5, 0, 0, 0.1);
+        }
+
+        .heading {
+            font-weight: bold;
+            font-size: 14px;
+            color: black;
+            margin-top: 5px;
+        }
+
+        .desc {
+            color: black;
+            font-size: 14px;
+        }
+
+        .info {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+        .bottom-right{
+			color: gray;
+		}
+
+      
+        .color-left:hover{
+			color:blue  ;
+		}
+       
+		.color:hover{
+			color: red;
+		}
+        .bottom-left {
+            padding-top: 3px;
+        }
+        .bottom-id{
+            background: #1d7ff0;
+            color: white;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+
+        .title {
+            font-size: 22px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .title-left {
+            width: 372px;
+            padding-top: 4px;
+        }
+
+        .title-right {
+            width: 28px;
+            text-align: center;
+            padding-top: 4px;
+            font-size: 26px !important;
+            color: #5983F1;
+        }
+    </style>
+
+     <!-- card -->
+    <div class="container">
+        <div class="parent">
+            <div class="title">
+                <span class="title-left">Task Board</span><a id="modalBtn" class="title-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-square"
+                        aria-hidden="true"></i></a>
+            </div>
+            <div class="card">
+                <div class="info">
+					<div class="form-check">
+  						<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option" aria-label="...">
+					</div>
+                    <h6 class="heading">My new Task</h6>
+                    <p class="desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                        has been</p>
+                    <div class="bottom">
+                        <span class="bottom-left">5 july</span>
+                        <div class="bottom-right">
+	                  		  <a onclick='editUser()' class="color-left fa-regular fa-pen-to-square"></a>&nbsp;&nbsp;<a onclick='deleteUser()' class=" color fa-solid fa-trash-can">&#xe020;</a>
+	                	</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+    
+        <!-- Modal content-->
+
+        <div class="modal-content">
+            <div class="modal-header">
+				 <h4 class="modal-title" id="Modaltitle">Add Task</h4>
+                <button type="button" id="modalCloseBtn" class="close" data-dismiss="modal">&times;</button>
+               
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="taskTitle">Title :</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" class="form-control" id="taskId" >
+                            <input type="text" class="form-control" id="taskTitle" placeholder="Title">     
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="description">Description :</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="description"  placeholder="Description">
+                            </div>         
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="dueDate">Due Date :</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="dueDate"  >
+                            </div> 
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="priprityLevel">Priprity Level :</label>
+                            <div class="col-sm-8">
+                                <select name="priprityLevel" class="form-control" id="priprityLevel">
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div> 
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label col-sm-4" for="assignedTo">Assigned To :</label>
+                            <div class="col-sm-8">
+                                <select  class="form-control" id="assignedTo">
+                                    <option value="">Select Employee</option>
+                                </select>
+                            </div> 
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="addBtn">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: root + "/task",
+                type: "GET",
+                headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+	                "Authorization": 'Bearer ' + userDetails.accessToken
+				},
+                success: function (response) {
+                    // console.log(response);
+                    response.forEach(function (task) {
+                        $(".parent").append(
+                        '<div class="card '+task.id+'">' +
+                        '    <div class="sky-blue">' +
+                        '    </div>' +
+                        '    <div class="top">'+
+                        "        <a onclick='editUser("+JSON.stringify(task)+")' class='glyphicon glyphicon-edit'></a>&nbsp;&nbsp;<a  onclick='deleteUser("+ task.id +")'class='glyphicon'>&#xe020;</a>"+
+                        '    </div>'+
+                        '    <div class="info">' +
+                        '        <h6 class="title">'+task.title+'</h6>' +
+                        '        <p class="description">'+task.description+'</p>' +
+                        '        <div class="bottom">' +
+                        '            <span class="bottom-left dueDate">' + task.dueDate + '</span>'+
+                        '            <div class="bottom-right">'+
+                        "        		<a onclick='editUser("+JSON.stringify(task)+")' class='color-left fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteUser("+ task.id +")'class='color fa-solid fa-trash-can'>&#xe020;</a>" +
+                        '       	 </div>' +
+                        '    </div>' +
+                        '</div>'
+                    );
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+            $("#addBtn").click(function () {
+                var data ={
+                    "title": $("#taskTitle").val(),
+                    "description": $("#description").val(),
+                    "dueDate": $("#dueDate").val(),
+                    "priprityLevel": $("#priprityLevel").val(),
+                    "assignedTo": $("#assignedTo").val()
+                    
+                }
+
+                console.log(JSON.stringify(data));
+
+                var url = 'http://localhost:8080/task';
+                var method = 'post';
+
+
+                var id = $("#taskId").val();
+                console.log(id);
+                if(id){
+                    data.id = id;
+                    url = 'http://localhost:8080/task/'+id ;
+                    method = 'put';
+                }
+                $.ajax({
+                    url: url,
+                    method: method,
+                    type: 'json',
+                    data: data,
+                    success: function (task) {
+                        console.log(" task"+task)
+                        if(id){
+                            var updatedCard = $(".parent").find("."+task.id);
+                            console.log(updatedCard);
+                            $(updatedCard).find(".title").text(task.title);
+                            $(updatedCard).find(".description").text(task.description);
+                            $(updatedCard).find(".dueDate").text(task.dueDate);
+                            $(updatedCard).find(".assignedTo").text(task.assignedTo);
+                            $(updatedCard).find(".priprityLevel").text(task.priprityLevel);
+                       }else{
+                            $(".parent").append(
+                                '<div class="card">' +
+                                '    <div class="sky-blue">' +
+                                '    </div>' +
+                                '    <div class="top">'+
+                                "        <a onclick='editUser("+JSON.stringify(task)+")' class='glyphicon glyphicon-edit'></a>&nbsp;&nbsp;<a  onclick='deleteUser("+ task.id +")'class='glyphicon'>&#xe020;</a>"+
+                                '    </div>'+
+                                '    <div class="info">' +
+                                '        <h6 class="heading">'+task.title+'</h6>' +
+                                '        <p class="desc">'+task.description+'</p>' +
+                                '        <div class="bottom">' +
+                                '            <span class="bottom-left">' + task.dueDate + '</span>'+
+                                '            <span class="bottom-id assignedTo">' + task.assignedTo+ '</span>'+
+                                '            <span class="bottom-right">' + task.priprityLevel + '</span>' +
+                                '        </div>' +
+                                '    </div>' +
+                                '</div>'
+                            );     
+                        }
+                        clear();
+                        $("#modalCloseBtn").trigger("click");
+                     },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+                
+            });
+
+
+
+        });
+        function editUser(task){
+            $("#modalBtn").trigger("click");
+            
+            $("#taskId").val(task.id);
+            $("#taskTitle").val(task.title);
+            $("#description").val(task.description);
+            $("#dueDate").val(task.dueDate);
+            $("#assignedTo").val(task.assignedTo);
+            $("#priprityLevel").val(task.priprityLevel);
+            $("#addBtn").text("Update");
+        }
+
+        function clear() {
+            $("#taskId").val("");
+            $("#taskTitle").val("");
+            $("#description").val("");
+            $("#dueDate").val("");
+            $("#priprityLevel").val("High");
+            $("#assignedTo").prop("selectedIndex", 0);
+            $("#addBtn").text("Save");
+        }
+
+        $("#modalBtn").click(function () {clear()});
+        
+
+        function deleteUser(id){
+
+            
+            $.ajax({
+            url: 'http://localhost:8080/task/'+id ,
+            method: 'DELETE',
+            success: function (result) {
+                console.log("result"+result);
+
+                var removeCard = $(".parent").find("."+id);
+                console.log(removeCard);
+                $(removeCard).remove();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    </script>

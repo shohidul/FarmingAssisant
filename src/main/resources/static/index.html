@@ -310,7 +310,7 @@ li a.active {
 			<li class="nav-item"><a class="nav-link" id="weatherUpdates"
 					href="#">Weather Updates</a></li>
 			<li class="nav-item"><a class="nav-link" id="taskMgt"
-					href="#">Tasks</a></li>
+					href="#task">Tasks</a></li>
 			<li class="nav-item"><a class="nav-link" id="marketPrice"
 					href="#">Market Price</a></li>
 			<li class="nav-item"><a class="nav-link" id="knowledgeCorner"
@@ -407,6 +407,10 @@ li a.active {
 		$("#userProfile").click(function() {
 			$("#contents").load("/pages/userProfile.html");
 			window.localStorage.setItem("genericfospage", "userProfile");
+		});
+		$("#taskMgt").click(function() {
+			$("#contents").load("/pages/task.html");
+			window.localStorage.setItem("genericfospage", "task");
 		});
 		$("#start").click(function() {
 			$("#contents").load("/pages/start.html");
