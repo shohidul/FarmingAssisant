@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.fassistant.models.Task;
@@ -20,7 +21,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public List<Task> fatchAllTask() {
-		List<Task>	allTask =taskRepository.findAll();
+		List<Task>	allTask =taskRepository.findAll((Sort.by(Sort.Direction.ASC, "id")));
 		return allTask;
 	}
 
@@ -54,14 +55,17 @@ public class TaskServiceImpl implements TaskService {
 			if (Objects.nonNull(task.getCreatedBy()) && task.getCreatedBy() != 0) {
 				originalTask.setCreatedBy(task.getCreatedBy());
 			}
-			if (Objects.nonNull(task.getAssignedTo()) && task.getAssignedTo() != 0) {
-				originalTask.setAssignedTo(task.getAssignedTo());
-			}
+//			if (Objects.nonNull(task.getAssignedTo()) && task.getAssignedTo() != 0) {
+//				originalTask.setAssignedTo(task.getAssignedTo());
+//			}
 			if (Objects.nonNull(task.getCreatedDate())) {
 				originalTask.setCreatedDate(task.getCreatedDate());
 			}
 			if (Objects.nonNull(task.getUpdatedDate())) {
 				originalTask.setUpdatedDate(task.getUpdatedDate());
+			}
+			if (Objects.nonNull(task.getStatus())) {
+				originalTask.setStatus(task.getStatus());
 			}
 			return taskRepository.save(originalTask);
 		}
