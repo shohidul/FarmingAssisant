@@ -24,10 +24,15 @@ html {
 html, body {
     min-height: 100%;
 }
+
+#contents{
+	min-height: 650px;
+	margin: 50px 100px;
+}
 .nav li>a {
 	text-decoration: none;
 	color: black;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: bold;
 	height: 90px;
 	padding: 45px 25px 5px 25px;
@@ -289,7 +294,7 @@ li a.active {
 <body>
 	<nav class="container-fluid navbar navbar-light bg-light pt-0 sticky-top">
 		<ul class="nav justify-content-end" style="margin: auto;">
-			<li class="nav-item"><a class="nav-link" href="#" id="login">Log
+			<li class="nav-item"><a class="nav-link" href="#login" id="login">Log
 				In</a></li>
 
 			<li class="nav-item dropdown d-none" id="userDropdown"><a
@@ -306,17 +311,19 @@ li a.active {
 			</li>
 			<!-- <li class="nav-item"><a class="nav-link" href="#siteFooter">About us</a></li> -->
 			<li class="nav-item"><a class="nav-link" id="cropInformation"
-					href="#">Crop Information</a></li>
+					href="#cropInformation">Crop Information</a></li>
 			<li class="nav-item"><a class="nav-link" id="weatherUpdates"
-					href="#">Weather Updates</a></li>
+					href="#weatherUpdates">Weather Updates</a></li>
 			<li class="nav-item"><a class="nav-link" id="taskMgt"
 					href="#task">Tasks</a></li>
 			<li class="nav-item"><a class="nav-link" id="marketPrice"
-					href="#">Market Price</a></li>
+					href="#marketPrice">Market Price</a></li>
 			<li class="nav-item"><a class="nav-link" id="knowledgeCorner"
-					href="#">Knowledge Corner</a></li>
+					href="#knowledgeCorner">Knowledge Corner</a></li>
 			<li class="nav-item"><a class="nav-link" id="pestControl"
-					href="#">Pest Control</a></li>
+					href="#pestControl">Pest Control</a></li>
+			<li class="nav-item"><a class="nav-link" id="history"
+					href="#history">History</a></li>
 			<!-- <li class="nav-item"><a class="nav-link active" id="start"
 				href="#">Start</a></li> -->
 			<!-- <li class="nav-item"><a class="nav-link" id="shops" href="#">Outlets</a> -->
@@ -405,18 +412,33 @@ li a.active {
 			window.localStorage.setItem("genericfospage", "start");
 		});
 		$("#userProfile").click(function() {
-			$("#contents").load("/pages/userProfile.html");
-			window.localStorage.setItem("genericfospage", "userProfile");
+			loadPage("userProfile");
+		});
+		$("#cropInformation").click(function() {
+			loadPage("cropInformation");
+		});
+		$("#weatherUpdates").click(function() {
+			loadPage("weatherUpdates");
 		});
 		$("#taskMgt").click(function() {
-			$("#contents").load("/pages/task.html");
-			window.localStorage.setItem("genericfospage", "task");
+			loadPage("taskMgt");
+		});
+		$("#marketPrice").click(function() {
+			loadPage("marketPrice");
+		});
+		$("#knowledgeCorner").click(function() {
+			loadPage("knowledgeCorner");
+		});
+		$("#pestControl").click(function() {
+			loadPage("pestControl");
+		});
+		$("#history").click(function() {
+			loadPage("history");
 		});
 		$("#start").click(function() {
-			$("#contents").load("/pages/start.html");
-			window.localStorage.setItem("genericfospage", "start");
+			loadPage("start");
 		});
-		$("#shops").click(function() {
+		/*$("#shops").click(function() {
 
 			$("#contents").load("/pages/start.html");
 			window.localStorage.setItem("genericfospage", "start");
@@ -426,12 +448,11 @@ li a.active {
 				}, 'slow');
 			}, 100);
 
-		});
+		});*/
 		$("#login").click(function() {
-			$("#contents").load("/pages/login.html");
-			window.localStorage.setItem("genericfospage", "login");
+			loadPage("login");
 		});
-		$("#cart").click(function() {
+		/*$("#cart").click(function() {
 			$("#contents").load("/pages/cart.html");
 			window.localStorage.setItem("genericfospage", "cart");
 		});
@@ -442,7 +463,7 @@ li a.active {
 		$("#profile").click(function() {
 			$("#contents").load("/pages/profile.html");
 			window.localStorage.setItem("genericfospage", "profile");
-		});
+		});*/
 
 		var userDetails = window.localStorage.getItem("genericfosjwt");
 
@@ -456,7 +477,7 @@ li a.active {
 
 		$("#signout").click(function() {
 			window.localStorage.removeItem("genericfosjwt");
-			window.localStorage.setItem("genericfospage", "start");
+			loadPage("login");
 			window.location.replace("/");
 		});
 
@@ -481,6 +502,18 @@ li a.active {
 				}, 'slow');
 			}, 100);
 		}
+		
+		function loadPage(page) {
+		  if (!userDetails || page === "login") {
+		    page = "login";
+		  }
+
+		  const pagePath = `/pages/${page}.html`;
+
+		  $("#contents").load(pagePath);
+		  window.localStorage.setItem("genericfospage", page);
+		}
+
 	</script>
 </body>
 

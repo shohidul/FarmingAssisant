@@ -1,7 +1,6 @@
 
     <style>
         .parent {
-			min-height: 400px;
             margin-top: 15px;
             display: flex;
             align-items: center;
@@ -95,23 +94,24 @@
                     aria-hidden="true"></i></a>
         </div>
         <div class="parent">
-            <div class="card">
-                <div class="info">
-					<div class="form-check">
-  						<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option" aria-label="...">
-					</div>
-                    <h6 class="heading">My new Task</h6>
-                    <p class="desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+		    <div class="card ${task.id}">
+		        <div class="info">
+		            <div class="form-check mb-3">
+						<input type="hidden" class="form-control task-id" value="">
+		                <input class="form-check-input position-static task-status" type="checkbox" id="blankCheckbox" value="option" aria-label="...">
+		                <span class="text-muted small">It's done?</span>
+		            </div>
+		            <h6 class="heading task-title">My new Task</h6>
+		            <p class="desc task-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
                         has been</p>
-                    <div class="bottom">
-                        <span class="bottom-left">5 july</span>
-                        <div class="bottom-right">
-	                  		  <a onclick='editUser()' class="color-left fa-regular fa-pen-to-square"></a>&nbsp;&nbsp;<a onclick='deleteUser()' class=" color fa-solid fa-trash-can">&#xe020;</a>
-	                	</div>
-                    </div>
-                    
-                </div>
-            </div>
+		            <div class="bottom text-muted">
+		                <span class="bottom-left text-muted task-dueDate"><b>Planting date: </b>5 July, 2023</span>
+		                <div class="bottom-right">
+		            		<a onclick='editUser("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteUser("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>
+		           	 	</div>
+		            </div>
+		        </div>
+		    </div>
         </div>
     </div>
     <!-- Modal -->
@@ -122,7 +122,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-				 <h4 class="modal-title" id="Modaltitle">Add Task</h4>
+				 <h4 class="modal-title" id="Modaltitle">Create Task</h4>
                 <button type="button" id="modalCloseBtn" class="close" data-dismiss="modal">&times;</button>
                
             </div>
@@ -183,9 +183,10 @@
 				return `
 				    <div class="card ${task.id}">
 				        <div class="info">
-				            <div class="form-check">
+				            <div class="form-check mb-3">
 								<input type="hidden" class="form-control task-id" value="${task.id}">
 				                <input class="form-check-input position-static task-status" type="checkbox" id="blankCheckbox" ${status} value="option" aria-label="...">
+				                <span class="text-muted small">It's done?</span>
 				            </div>
 				            <h6 class="heading task-title">${task.title}</h6>
 				            <p class="desc task-description">${task.description}</p>
