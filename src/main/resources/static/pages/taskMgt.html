@@ -28,6 +28,9 @@
             color: black;
             margin-top: 5px;
         }
+        .heading a{
+        	color: black;
+        }
 
         .desc {
             color: black;
@@ -97,6 +100,7 @@
 		    font-weight: bold;
 		    padding: 4px;
 		    text-align: center;
+		    border: 1px solid green;
 		}
     </style>
 
@@ -115,7 +119,7 @@
 		                <input class="form-check-input position-static task-status" type="checkbox" id="blankCheckbox" value="option" aria-label="...">
 		                <span class="text-muted small">It's done?</span>
 		            </div>
-		            <h6 class="heading task-title">My new Task</h6>
+		            <h6 class="heading task-title"><a href="#" class="title-anchor"> Sample Task </a></h6>
 		            <p class="desc task-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
                         has been</p>
 		            <div class="bottom text-muted">
@@ -197,7 +201,7 @@
 				
 				const now = new Date();
 				const dayNow = now.getDate();
-				var isDue = dueDate.getDate() - dayNow === -2 ? "text-danger": "text-muted";
+				var isDue = dueDate.getDate() - dayNow < 0 ? "text-danger": "text-muted";
 				return `
 				    <div class="card ${task.id}">
 						<span class="corner-id">#${task.id}</span>
@@ -207,9 +211,12 @@
 				                <input class="form-check-input position-static task-status" type="checkbox" id="blankCheckbox" ${status} value="option" aria-label="...">
 				                <span class="text-muted small">It's done?</span>
 				            </div>
-				            <h6 class="heading task-title">${task.title}</h6>
+				            <input type="hidden" class="form-control h-task-title" value="${task.title}">
+				            <h6 class="heading task-title"><a href="#" class="title-anchor"> ${task.title} </a></h6>
+				            <input type="hidden" class="form-control h-task-description" value="${task.description}">
 				            <p class="desc task-description">${task.description}</p>
 				            <div class="bottom text-muted">
+				            	<input type="hidden" class="form-control h-task-dueDate" value="${formattedDate}">
 				                <span class="bottom-left task-dueDate ${isDue}"><b>Planting date: </b>${formattedDate}</span>`+
 				    '            <div class="bottom-right">'+
 				    "        		<a onclick='editTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteTask("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>" +
@@ -332,34 +339,16 @@
 
 
         });
-/*document.querySelector('.parent').addEventListener('click', e => {
-  if (e.target.classList.contains('card')) {
-			if(!alertify.myAlert){
-			  //define a new dialog
-			  alertify.dialog('myAlert',function factory(){
-			    return{
-			      main:function(message){
-			        this.message = message;
-			      },
-			      setup:function(){
-			          return { 
-			            buttons:[{text: "cool!", key:27}],
-			            focus: { element:0 }
-			          };
-			      },
-			      prepare:function(){
-			        this.setContent(this.message);
-			      }
-			  }});
-			}
-			//launch it.
-			alertify.myAlert("Browser dialogs made easy!");
-  }
-});*/
-/*		 $(document).on("click", ".card", function (e) {
-			console.log($(this).hasClass(".task-status, .edit-btn, .delete-btn"));
-			console.log(e.target.classList);
-			if (!e.target.classList.contains('edit-btn')) {
+
+		 $('.parent').on("click", ".title-anchor", function (e) {
+			 
+			 var card = $(this).closest(".card");
+			 var taskId = $(card).find(".task-id").val();
+			 var taskTitle = $(card).find(".h-task-title").val();
+			 var taskDescription = $(card).find(".h-task-description").val();
+			 var taskDueDate = $(card).find(".h-task-dueDate").val();
+			 console.log(taskId + taskDescription);
+	
 				if(!alertify.myAlert){
 				  //define a new dialog
 				  alertify.dialog('myAlert',function factory(){
@@ -370,7 +359,10 @@
 				      setup:function(){
 				          return { 
 				            buttons:[{text: "cool!", key:27}],
-				            focus: { element:0 }
+				            //focus: { element:0 },
+				          	options: {
+		                        title: "Details"
+		                    }
 				          };
 				      },
 				      prepare:function(){
@@ -379,12 +371,18 @@
 				  }});
 				}
 				//launch it.
-				alertify.myAlert("Browser dialogs made easy!");
-			}
-			//:not(.task-status, .edit-btn, .delete-btn)
+				alertify.myAlert(
+						`
 
-			  		
-			});*/
+		            <h6 class="heading task-title">${taskTitle} #${taskId}</h6>
+		            <p class="desc task-description">${taskDescription}</p>
+		            <div class="bottom text-muted">
+		                <span class="bottom-left text-muted task-dueDate"><b>Planting date: </b>${taskDueDate}</span>
+		            </div>
+		      
+					`		
+				);
+		});
         function editTask(task){
             $("#modalBtn").trigger("click");
             

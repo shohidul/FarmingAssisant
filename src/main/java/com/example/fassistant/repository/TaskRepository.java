@@ -1,6 +1,5 @@
 package com.example.fassistant.repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +11,7 @@ import com.example.fassistant.models.Task;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-	@Query(value = "SELECT * FROM TASK t WHERE t.status = ?1", nativeQuery = true)
+	@Query(value = "SELECT * FROM TASK t WHERE t.status = ?1 ORDER BY t.due_date ASC", nativeQuery = true)
 	List<Task> fatchAllTaskByStatus(String status);
 
 }

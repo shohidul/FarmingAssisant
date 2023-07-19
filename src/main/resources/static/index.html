@@ -292,6 +292,10 @@ li a.active {
 	height: 10px;
 	background-color: green;
 }
+.glass-bg{
+	padding: 50px 25px;
+	background-color: rgba(255,255,255,0.3);
+}
 </style>
 </head>
 
@@ -409,7 +413,7 @@ li a.active {
 
 	<script>
 		var root = window.location.protocol + '//' + window.location.host;
-		var page = window.localStorage.getItem("genericfospage") == null ? "start"
+		var page = window.localStorage.getItem("genericfospage") == null ? "login"
 				: window.localStorage.getItem("genericfospage");
 				console.log(page);
 		$("#contents").load("/pages/" + page + ".html");

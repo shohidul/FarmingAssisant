@@ -23,7 +23,7 @@
 </style>
 <br>
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-8 glass-bg">
 		<div class="row">
 			<div id="main" class="mx-auto " style="width: 75%;height:500px;"></div>
 			<!-- <div class="col-md-4">
@@ -63,19 +63,26 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3">
-		<h6>Notifications</h6>
+	<div class="col-md-1"></div>
+	<div class="col-md-3 glass-bg">
+		<h5>Daily Reminders</h5>
 		<div id="notificationPanel"></div>
 	</div>
 </div>
 
 
 <script type="text/javascript">
+
+	//var imageUrl = "/images/johannes-plenio.jpg";
+	//$("body").css("background-image", "url(" + imageUrl + ")");
+
+
   // Initialize the echarts instance based on the prepared dom
   var myChart = echarts.init(document.getElementById('main'));
 
   // Specify the configuration items and data for the chart
   var option = {
+	
     title: {
       text: 'Key metrics'
     },
@@ -84,9 +91,22 @@
       data: ['Bars']
     },
     xAxis: {
+   	 /* axisLabel: {
+   		    color: function (value, index) {
+   		      return '#fff';
+   		    },
+   		 fontWeight: "bold"
+   		  },*/
       data: ['Crop Growth', 'Weather Condition', 'Market Prices', 'Livestock']
     },
-    yAxis: {},
+    yAxis: {
+   	  /*axisLabel: {
+   		    color: function (value, index) {
+   		      return '#fff';
+   		    },
+   		 fontWeight: "bold"
+   		  },*/
+    },
     series: [
       {
         name: 'sales',
@@ -112,13 +132,14 @@
 	                if(yearNow === dueDate.getFullYear()){
 						if(monthNow === dueDate.getMonth()){
 							if(dueDate.getDate() - dayNow < dayRemaining){
-								if(dueDate.getDate() - dayNow === 1){
-									console.log(dueDate.getDate() - dayNow);
+								console.log(dueDate.getDate() - dayNow);
+								if(dueDate.getDate() - dayNow > -2){
+									
 									 var text = `
-									  	<div class="card">
+									  	<div class="card mb-2">
 										  <div class="card-body">
 										    <b>Task #${task.id}</b>  <br>
-										    Planting date ${task.dueDate} <br>
+										    Planting date: ${task.dueDate} <br>
 										    
 										  </div>
 										</div>
@@ -126,12 +147,12 @@
 									  $("#notificationPanel").append(text);
 									  //updateNotificationCount(1, task, text);
 								}
-								else if(dueDate.getDate() - dayNow === -2){
+								else if(dueDate.getDate() - dayNow < -1){
 									 var text = `
-									  	<div class="card">
+									  	<div class="card mb-2">
 										  <div class="card-body">
 										    <b class="text-danger">Due Task #${task.id}</b> <br>
-										    Planting date ${task.dueDate} <br>
+										    Planting date: ${task.dueDate} <br>
 										    
 										  </div>
 										</div>
