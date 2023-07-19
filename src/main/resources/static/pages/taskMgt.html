@@ -241,7 +241,10 @@
             });
 
 
-            $(".parent").on("click", ".task-status", function () {
+            $(".parent").on("click", ".task-status", function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				
 				swal({
 				  title: "Do you want to mark it done?",
 				  icon: "warning",
@@ -259,8 +262,12 @@
 								'Content-Type': 'application/json',
 				                "Authorization": 'Bearer ' + userDetails.accessToken
 						},
-			            success: function (result) {
+			            success: function (task) {
 							check.prop("disabled", true);
+							
+							var updatedCard = $(".parent").find("."+task.id);
+                            updatedCard.replaceWith(dynamicCard(task));
+                            
 			                getAllTasksByStatus();
 			            },
 			            error: function (error) {
@@ -325,6 +332,59 @@
 
 
         });
+/*document.querySelector('.parent').addEventListener('click', e => {
+  if (e.target.classList.contains('card')) {
+			if(!alertify.myAlert){
+			  //define a new dialog
+			  alertify.dialog('myAlert',function factory(){
+			    return{
+			      main:function(message){
+			        this.message = message;
+			      },
+			      setup:function(){
+			          return { 
+			            buttons:[{text: "cool!", key:27}],
+			            focus: { element:0 }
+			          };
+			      },
+			      prepare:function(){
+			        this.setContent(this.message);
+			      }
+			  }});
+			}
+			//launch it.
+			alertify.myAlert("Browser dialogs made easy!");
+  }
+});*/
+/*		 $(document).on("click", ".card", function (e) {
+			console.log($(this).hasClass(".task-status, .edit-btn, .delete-btn"));
+			console.log(e.target.classList);
+			if (!e.target.classList.contains('edit-btn')) {
+				if(!alertify.myAlert){
+				  //define a new dialog
+				  alertify.dialog('myAlert',function factory(){
+				    return{
+				      main:function(message){
+				        this.message = message;
+				      },
+				      setup:function(){
+				          return { 
+				            buttons:[{text: "cool!", key:27}],
+				            focus: { element:0 }
+				          };
+				      },
+				      prepare:function(){
+				        this.setContent(this.message);
+				      }
+				  }});
+				}
+				//launch it.
+				alertify.myAlert("Browser dialogs made easy!");
+			}
+			//:not(.task-status, .edit-btn, .delete-btn)
+
+			  		
+			});*/
         function editTask(task){
             $("#modalBtn").trigger("click");
             
@@ -351,6 +411,7 @@
         function deleteTask(id){
 			swal({
 			  title: "Are you sure?",
+			  text: "Do you want to delete this task #"+id+"?",
 			  icon: "warning",
 			  buttons: true,
 			  dangerMode: true,
@@ -380,8 +441,6 @@
 		                swal(error.responseText);
 		            }
 		        });
-			  } else {
-			    swal("Task is safe!");
 			  }
 			});
     }
