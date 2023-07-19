@@ -1,10 +1,6 @@
 package com.example.fassistant.controllers;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.example.fassistant.models.Task;
-import com.example.fassistant.models.User;
 import com.example.fassistant.service.TaskService;
 
+@CrossOrigin
 @RestController
 public class TaskController {
 
@@ -55,16 +51,27 @@ public class TaskController {
 	public List<Task> getAllTask() {
 		return taskService.fatchAllTask();
 	}
+	
+	@GetMapping("/taskByStatus/{status}")
+	public List<Task> getAllTaskByStatus(@PathVariable("status") String status) {
+		return taskService.fatchAllTaskByStatus(status);
+	}
 
 	@CrossOrigin
 	@GetMapping("/task/{id}")
 	public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(taskService.getTaskId(id));
 	}
-	@PutMapping("/taskstatus/{id}")
+	@PutMapping("/updateTaskStatus/{id}")
 	public Task updateTaskStatus(@PathVariable("id") Long id) {
 		 Task task = taskService.getTaskId(id);
 		 task.setStatus("1");
+		return taskService.updateTaskId(id, task);
+	}
+	@PutMapping("/updateTaskNotification/{id}")
+	public Task updateTaskNotification(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
+		Task task = taskService.getTaskId(id);
+		task.setNotification(Integer.parseInt(body.get("count")));
 		return taskService.updateTaskId(id, task);
 	}
 	@PutMapping("/task/{id}")

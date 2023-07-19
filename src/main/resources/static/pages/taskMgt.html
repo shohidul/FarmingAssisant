@@ -85,6 +85,19 @@
             font-size: 26px !important;
             color: #5983F1;
         }
+        .corner-id{
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    background-color: green;
+		    border-bottom-left-radius: 30px;
+		    width: 48px;
+		    height: 35px;
+		    color: white;
+		    font-weight: bold;
+		    padding: 4px;
+		    text-align: center;
+		}
     </style>
 
      <!-- card -->
@@ -95,6 +108,7 @@
         </div>
         <div class="parent">
 		    <div class="card ${task.id}">
+				<span class="corner-id">#1</span>
 		        <div class="info">
 		            <div class="form-check mb-3">
 						<input type="hidden" class="form-control task-id" value="">
@@ -107,7 +121,7 @@
 		            <div class="bottom text-muted">
 		                <span class="bottom-left text-muted task-dueDate"><b>Planting date: </b>5 July, 2023</span>
 		                <div class="bottom-right">
-		            		<a onclick='editUser("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteUser("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>
+		            		<a onclick='editTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteTask("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>
 		           	 	</div>
 		            </div>
 		        </div>
@@ -180,8 +194,13 @@
 				  year: 'numeric'
 				});
 				var status = task.status === "1"? "checked disabled": "";
+				
+				const now = new Date();
+				const dayNow = now.getDate();
+				var isDue = dueDate.getDate() - dayNow === -2 ? "text-danger": "text-muted";
 				return `
 				    <div class="card ${task.id}">
+						<span class="corner-id">#${task.id}</span>
 				        <div class="info">
 				            <div class="form-check mb-3">
 								<input type="hidden" class="form-control task-id" value="${task.id}">
@@ -191,9 +210,9 @@
 				            <h6 class="heading task-title">${task.title}</h6>
 				            <p class="desc task-description">${task.description}</p>
 				            <div class="bottom text-muted">
-				                <span class="bottom-left text-muted task-dueDate"><b>Planting date: </b>${formattedDate}</span>`+
+				                <span class="bottom-left task-dueDate ${isDue}"><b>Planting date: </b>${formattedDate}</span>`+
 				    '            <div class="bottom-right">'+
-				    "        		<a onclick='editUser("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteUser("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>" +
+				    "        		<a onclick='editTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteTask("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>" +
 				    '       	 </div>' +
 				            `</div>
 				        </div>
@@ -223,27 +242,33 @@
 
 
             $(".parent").on("click", ".task-status", function () {
-				var check = $(this);
-				var id = $(this).prev().val();
-				console.log(id);
-	            $.ajax({
-		            url: root + "/taskstatus/"+id ,
-		            type: 'PUT',
-		            //data: JSON.stringify({"status": "1"}),
-		            headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-			                "Authorization": 'Bearer ' + userDetails.accessToken
-					},
-		            success: function (result) {
-		                console.log($(this));
-						check.prop("disabled", true);
-		               
-		            },
-		            error: function (error) {
-		                console.log(error);
-		            }
-		        });	
+				swal({
+				  title: "Do you want to mark it done?",
+				  icon: "warning",
+				  buttons: true,
+				})
+				.then((yes) => {
+				  if (yes) {
+					var check = $(this);
+					var id = $(this).prev().val();
+		            $.ajax({
+			            url: root + "/updateTaskStatus/"+id ,
+			            type: 'PUT',
+			            headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json',
+				                "Authorization": 'Bearer ' + userDetails.accessToken
+						},
+			            success: function (result) {
+							check.prop("disabled", true);
+			                getAllTasksByStatus();
+			            },
+			            error: function (error) {
+			                swal(error.responseText);
+			            }
+			        });	
+				  }
+				});
 			});	
             $("#addBtn").click(function () {
                 var data ={
@@ -280,14 +305,18 @@
                         if(id){
                             var updatedCard = $(".parent").find("."+task.id);
                             updatedCard.replaceWith(dynamicCard(task));
+                            
+                            alertify.success('Task updated successfully!');
                         }else{
-                            $(".parent").append(dynamicCard(task));     
+                            $(".parent").append(dynamicCard(task));  
+                            alertify.success('Task created successfully!');   
                         }
+                        getAllTasksByStatus();
                         clear();
                         $("#modalCloseBtn").trigger("click");
                      },
                     error: function (error) {
-                        console.log(error);
+                        swal(error.responseText);
                     }
                 });
                 
@@ -296,7 +325,7 @@
 
 
         });
-        function editUser(task){
+        function editTask(task){
             $("#modalBtn").trigger("click");
             
             $("#taskId").val(task.id);
@@ -319,27 +348,41 @@
         $("#modalBtn").click(function () {clear()});
         
 
-        function deleteUser(id){
-
-            
-            $.ajax({
-            url: root + "/task/"+id ,
-            type: 'DELETE',
-            headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-	                "Authorization": 'Bearer ' + userDetails.accessToken
-			},
-            success: function (result) {
-                console.log("result"+result);
-
-                var removeCard = $(".parent").find("."+id);
-                console.log(removeCard);
-                $(removeCard).remove();
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+        function deleteTask(id){
+			swal({
+			  title: "Are you sure?",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+	            $.ajax({
+		            url: root + "/task/"+id ,
+		            type: 'DELETE',
+		            headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json',
+			                "Authorization": 'Bearer ' + userDetails.accessToken
+					},
+		            success: function (result) {
+		                getAllTasksByStatus();
+		
+		                var removeCard = $(".parent").find("."+id);
+		                console.log(removeCard);
+		                $(removeCard).remove();
+		                
+		                swal("Task has been deleted!", {
+					      icon: "success",
+					    });
+		            },
+		            error: function (error) {
+		                swal(error.responseText);
+		            }
+		        });
+			  } else {
+			    swal("Task is safe!");
+			  }
+			});
     }
     </script>

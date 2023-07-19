@@ -209,9 +209,8 @@
 		});
 
 		request.done(function (data) {
+			alertify.success('Registration Successful');
 			doLogin (username, password);
-			// alert(data.message);
-			// $('#signupForm').trigger("#btnReset");
 		});
 
 		request.fail(function (jqXHR, textStatus) {

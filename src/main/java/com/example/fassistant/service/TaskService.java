@@ -11,6 +11,8 @@ public interface TaskService {
 	
 	List<Task> fatchAllTask();
 	
+	List<Task> fatchAllTaskByStatus(String status);
+	
 	Task getTaskId(Long id);
 
 	Task updateTaskId(Long id, Task task);

@@ -10,9 +10,13 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+	integrity=""
 	crossorigin="anonymous">
 <link rel="stylesheet" href="/assets/fontawesome-6.2.0/css/all.min.css">
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 <link rel="icon" href="favicon.ico?v=2" />
 <title>FA</title>
 
@@ -330,7 +334,7 @@ li a.active {
 			<!-- </li> -->
 			<!-- <li class="nav-item"><a class="nav-link" href="#siteFooter">Find us</a></li> -->
 			
-			<li class="nav-item"><a class="nav-link active" href="#" id="start">Dashboard</a></li>
+			<li class="nav-item"><a class="nav-link active" href="#start" id="start">Dashboard</a></li>
 		</ul>
 		<!-- <a class="navbar-brand" id="logo" href="/">Dashboard</a> -->
 	</nav>
@@ -400,17 +404,20 @@ li a.active {
 	</script>
 	<script src=" https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js "></script>
 	<script src="/assets/fontawesome-6.2.0/js/all.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 	<script>
 		var root = window.location.protocol + '//' + window.location.host;
 		var page = window.localStorage.getItem("genericfospage") == null ? "start"
 				: window.localStorage.getItem("genericfospage");
+				console.log(page);
 		$("#contents").load("/pages/" + page + ".html");
 
-		$("#logo").click(function() {
+		/*$("#logo").click(function() {
 			$("#contents").load("/pages/start.html");
 			window.localStorage.setItem("genericfospage", "start");
-		});
+		});*/
 		$("#userProfile").click(function() {
 			loadPage("userProfile");
 		});
@@ -513,6 +520,77 @@ li a.active {
 		  $("#contents").load(pagePath);
 		  window.localStorage.setItem("genericfospage", page);
 		}
+		
+		var allUndoneTasks;
+		function getAllTasksByStatus(){
+			$.ajax({
+                url: root + "/taskByStatus/0",
+                type: "GET",
+                headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+	                "Authorization": 'Bearer ' + userDetails.accessToken
+				},
+                success: function (tasks) {
+					allUndoneTasks = tasks;
+                    /*tasks.forEach(function (task) {
+						
+                        const dueDate = new Date(task.dueDate);
+                        console.log(dueDate);
+                    })*/
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+		}
+		getAllTasksByStatus();
+		/*const dayRemaining = 1;
+		function checkTaskReminder (){
+			const now = new Date();
+			const dayNow = now.getDate();
+			const monthNow = now.getMonth();
+			const yearNow = now.getFullYear();
+			if(allUndoneTasks){
+				allUndoneTasks.forEach(function (task) {
+	                const dueDate = new Date(task.dueDate);
+	                if(yearNow === dueDate.getFullYear()){
+						if(monthNow === dueDate.getMonth()){
+							if(dueDate.getDate() - dayNow === dayRemaining){
+								if(task.notification === 0){
+									$.ajax({
+							            url: root + "/updateTaskNotification/"+task.id ,
+							            type: 'PUT',
+							            data: JSON.stringify({"count": "1"}),
+							            headers: {
+												'Accept': 'application/json',
+												'Content-Type': 'application/json',
+								                "Authorization": 'Bearer ' + userDetails.accessToken
+										},
+							            success: function (result) {
+										  alertify.notify("Task #${task.is} planting date ${task.dueDate}", "success", 0
+										  , function(){
+										    loadPage("taskMgt");
+										  });
+							              getAllTasksByStatus();
+							            },
+							            error: function (error) {
+							                console.log(error);
+							            }
+							        });	
+								}
+							}
+						}
+					}
+	            })
+			}
+		}
+		
+		if (userDetails) {
+		   setInterval(checkTaskReminder, 1000);
+		}
+		*/
+
 
 	</script>
 </body>

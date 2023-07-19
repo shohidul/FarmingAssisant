@@ -21,7 +21,13 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public List<Task> fatchAllTask() {
-		List<Task>	allTask =taskRepository.findAll((Sort.by(Sort.Direction.ASC, "id")));
+		List<Task> allTask =taskRepository.findAll((Sort.by(Sort.Direction.ASC, "id")));
+		return allTask;
+	}
+	
+	@Override
+	public List<Task> fatchAllTaskByStatus(String status) {
+		List<Task> allTask =taskRepository.fatchAllTaskByStatus(status);
 		return allTask;
 	}
 

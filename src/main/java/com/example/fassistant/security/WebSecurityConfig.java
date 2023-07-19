@@ -80,15 +80,15 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 		return http.build();
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-				.allowedOrigins("http://localhost:8080", "https://genericfos.herokuapp.com");
-			
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//				.allowedOrigins("http://localhost:8080", "https://genericfos.herokuapp.com", "https://9776-103-95-99-245.ngrok-free.app");
+//			
+//			}
+//		};
+//	}
 }

@@ -25,6 +25,7 @@ public class Task {
 	private Long createdBy;
 	private Long assignedTo;
 	private String status;
+	private int notification;
 
 	@Column(updatable = false)
 	@CreationTimestamp
@@ -117,10 +118,19 @@ public class Task {
 		this.status = status;
 	}
 
+	public int getNotification() {
+		return notification;
+	}
+
+	public void setNotification(int notification) {
+		this.notification = notification;
+	}
+
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", dueDate=" + dueDate
 				+ ", priprityLevel=" + priprityLevel + ", createdBy=" + createdBy + ", assignedTo=" + assignedTo
-				+ ", status=" + status + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
+				+ ", status=" + status + ", notification=" + notification + ", createdDate=" + createdDate
+				+ ", updatedDate=" + updatedDate + "]";
 	}
 }
