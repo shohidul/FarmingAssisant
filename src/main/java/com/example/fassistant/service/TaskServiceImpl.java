@@ -55,8 +55,14 @@ public class TaskServiceImpl implements TaskService {
 			if (Objects.nonNull(task.getDueDate())) {
 				originalTask.setDueDate(task.getDueDate());
 			}
-			if (Objects.nonNull(task.getPriprityLevel()) && !"".equalsIgnoreCase(task.getPriprityLevel())) {
-				originalTask.setPriprityLevel(task.getPriprityLevel());
+//			if (Objects.nonNull(task.getPriprityLevel()) && !"".equalsIgnoreCase(task.getPriprityLevel())) {
+//				originalTask.setPriprityLevel(task.getPriprityLevel());
+//			}
+			if (Objects.nonNull(task.getSoilType()) && !"".equalsIgnoreCase(task.getSoilType())) {
+				originalTask.setSoilType(task.getSoilType());
+			}
+			if (Objects.nonNull(task.getClimateType()) && !"".equalsIgnoreCase(task.getClimateType())) {
+				originalTask.setClimateType(task.getClimateType());
 			}
 			if (Objects.nonNull(task.getCreatedBy()) && task.getCreatedBy() != 0) {
 				originalTask.setCreatedBy(task.getCreatedBy());

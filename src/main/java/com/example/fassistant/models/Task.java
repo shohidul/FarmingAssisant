@@ -21,11 +21,11 @@ public class Task {
 	private String title;
 	private String description;
 	private Date dueDate;
-	private String priprityLevel;
+	private String soilType;
+	private String climateType;
 	private Long createdBy;
 	private Long assignedTo;
 	private String status;
-	private int notification;
 
 	@Column(updatable = false)
 	@CreationTimestamp
@@ -69,13 +69,21 @@ public class Task {
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-
-	public String getPriprityLevel() {
-		return priprityLevel;
+	
+	public String getSoilType() {
+		return soilType;
 	}
 
-	public void setPriprityLevel(String priprityLevel) {
-		this.priprityLevel = priprityLevel;
+	public void setSoilType(String soilType) {
+		this.soilType = soilType;
+	}
+
+	public String getClimateType() {
+		return climateType;
+	}
+
+	public void setClimateType(String climateType) {
+		this.climateType = climateType;
 	}
 
 	public Long getCreatedBy() {
@@ -118,19 +126,12 @@ public class Task {
 		this.status = status;
 	}
 
-	public int getNotification() {
-		return notification;
-	}
-
-	public void setNotification(int notification) {
-		this.notification = notification;
-	}
-
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", dueDate=" + dueDate
-				+ ", priprityLevel=" + priprityLevel + ", createdBy=" + createdBy + ", assignedTo=" + assignedTo
-				+ ", status=" + status + ", notification=" + notification + ", createdDate=" + createdDate
+				+ ", soilType=" + soilType + ", climateType=" + climateType + ", createdBy=" + createdBy
+				+ ", assignedTo=" + assignedTo + ", status=" + status + ", createdDate=" + createdDate
 				+ ", updatedDate=" + updatedDate + "]";
 	}
+
 }

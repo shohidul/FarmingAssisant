@@ -71,7 +71,7 @@ public class TaskController {
 	@PutMapping("/updateTaskNotification/{id}")
 	public Task updateTaskNotification(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
 		Task task = taskService.getTaskId(id);
-		task.setNotification(Integer.parseInt(body.get("count")));
+		//task.setNotification(Integer.parseInt(body.get("count")));
 		return taskService.updateTaskId(id, task);
 	}
 	@PutMapping("/task/{id}")

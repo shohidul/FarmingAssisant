@@ -107,8 +107,9 @@
      <!-- card -->
     <div class="">
         <div class="title">
-            <span class="title-left">Task Management</span><a id="modalBtn" class="title-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-square"
-                    aria-hidden="true"></i></a>
+            <span class="title-left text-center">Task Management</span>
+            <!-- <a id="modalBtn" class="title-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-square"
+                    aria-hidden="true"></i></a> -->
         </div>
         <div class="parent">
 		    <div class="card ${task.id}">
@@ -133,6 +134,7 @@
         </div>
     </div>
     <!-- Modal -->
+    <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
         <div class="modal-dialog">
     
@@ -145,37 +147,59 @@
                
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" id="taskForm">
+                	<input type="hidden" class="form-control" id="taskId" >
                     <div class="form-group row">
-                        <label class="control-label col-sm-4" for="taskTitle">Title :</label>
-                        <div class="col-sm-8">
-                            <input type="hidden" class="form-control" id="taskId" >
-                            <select  class="form-control" id="taskTitle">
-									<option value="">Select</option>
-                                    <option value="Aus">Aus</option>
-                                    <option value="Birri">Birri</option>
-                                    <option value="Aman">Aman</option>
-                                </select>   
-                        </div>
+                        <label class="control-label col-sm-4" for="name">Crop</label>
+                            <div class="col-sm-8">
+								<input type="text" class="form-control" readonly id="name">
+                            </div>         
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="description">Description :</label>
                             <div class="col-sm-8">
-								<textarea class="form-control" id="description" rows="2"></textarea>
+								<textarea class="form-control" id="description" rows="2" maxlength="255"></textarea>
                             </div>         
                     </div>
+		            <div class="form-group row">
+		                <label for="yieldEstimation" class="control-label col-sm-4">Yield Estimation</label>
+		                <div class="col-sm-8">
+		                	<input type="number" class="form-control" id="yieldEstimation">
+		                </div>
+		            </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="dueDate">Planting Date :</label>
                             <div class="col-sm-8">
                                 <input type="date" class="form-control" id="dueDate"  >
                             </div> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="soilType">Soil Type</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly id="soilType"> 
+                        </div>
+                    </div>
+					<div class="form-group row">
+				        <label class="control-label col-sm-4" for="climateType">Climate Type</label>
+				        <div class="col-sm-8">
+				            <select class="form-control" id="climateType">
+				                <option value="">Select</option>
+				                <option value="Tropical">Tropical</option>
+				                <option value="Dry">Dry</option>
+				                <option value="Temperate">Temperate</option>
+				                <option value="Continental">Continental</option>
+				                <option value="Polar">Polar</option>
+				                <option value="Highland">Highland</option>
+				            </select>
+				        </div>
+				    </div>
+          	<!-- 	<div class="form-group">
 					      <div class="col-sm-8 custom-control custom-checkbox mr-sm-2">
 					        <input type="checkbox" class="custom-control-input" id="taskStatus">
 					        <label class="custom-control-label" for="taskStatus">Task Status</label>
 					     </div>
-					 </div>
+					 </div> -->
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -229,7 +253,7 @@
 			
 			
             $.ajax({
-                url: root + "/task",
+                url: root + "/taskByStatus/0",
                 type: "GET",
                 headers: {
 					'Accept': 'application/json',
@@ -273,7 +297,7 @@
 							check.prop("disabled", true);
 							
 							var updatedCard = $(".parent").find("."+task.id);
-                            updatedCard.replaceWith(dynamicCard(task));
+                            updatedCard.remove();
                             
 			                getAllTasksByStatus();
 			            },
@@ -286,11 +310,13 @@
 			});	
             $("#addBtn").click(function () {
                 var data ={
-                    "title": $("#taskTitle").val(),
-                    "description": $("#description").val(),
-                    "dueDate": $("#dueDate").val(),
-                    "status": $("#taskStatus").is(":checked") ? "1":"0"    
-                }
+                        "title": $("#name").val(),
+                        "description": $("#description").val(),
+                        "dueDate": $("#dueDate").val(),
+                        "soilType": $("#soilType").val(),
+                        "climateType": $("#climateType").val(),
+                        //"status": $("#taskStatus").is(":checked") ? "1":"0"    
+                    }
 
                 console.log(JSON.stringify(data));
 
@@ -387,9 +413,12 @@
             $("#modalBtn").trigger("click");
             
             $("#taskId").val(task.id);
-            $("#taskTitle").val(task.title);
+            $("#name").val(task.title);
             $("#description").val(task.description);
             $("#dueDate").val(task.dueDate);
+            //$("#yieldEstimation").val(task.dueDate);
+            $("#soilType").val(task.soilType);
+            $("#climateType").val(task.climateType);
             $("#taskStatus").prop("checked", task.status === "1" ? true:false);
             $("#addBtn").text("Update");
         }

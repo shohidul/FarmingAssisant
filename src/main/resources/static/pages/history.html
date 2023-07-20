@@ -1,1 +1,189 @@
-history
+<style>
+        .parent {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+    		flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: #ffffff;
+            height: 150px;
+            width: 350px;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(5, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        .card:hover{
+            box-shadow: 0 5px 50px rgba(5, 0, 0, 0.1);
+        }
+
+        .heading {
+            font-weight: bold;
+            font-size: 14px;
+            color: black;
+            margin-top: 5px;
+        }
+        .heading a{
+        	color: black;
+        }
+
+        .desc {
+            color: black;
+            font-size: 14px;
+		    height: 21px;
+		    text-overflow: ellipsis;
+		    white-space: nowrap;
+		    overflow: hidden;
+        }
+
+        .info {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+       
+        .edit-btn:hover{
+			color:blue  ;
+			cursor: pointer;
+		}
+       
+		.delete-btn:hover{
+			color: red;
+			cursor: pointer;
+		}
+        .bottom-left {
+            padding-top: 3px;
+            font-size: 14px;
+        }
+        .bottom-id{
+            background: #1d7ff0;
+            color: white;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+
+        .title {
+            font-size: 22px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .title-left {
+            width: 372px;
+            padding-top: 4px;
+        }
+
+        .title-right {
+            width: 28px;
+            text-align: center;
+            padding-top: 4px;
+            font-size: 26px !important;
+            color: #5983F1;
+        }
+        .corner-id{
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    background-color: green;
+		    border-bottom-left-radius: 30px;
+		    width: 48px;
+		    height: 35px;
+		    color: white;
+		    font-weight: bold;
+		    padding: 4px;
+		    text-align: center;
+		    border: 1px solid green;
+		}
+    </style>
+
+     <!-- card -->
+    <div class="">
+        <div class="title">
+            <span class="title-left text-center">Task History</span>
+        </div>
+        <div class="parent">
+		    <div class="card ${task.id}">
+				<span class="corner-id">#1</span>
+		        <div class="info">
+		            <div class="form-check mb-3">
+						<input type="hidden" class="form-control task-id" value="">
+		                <input class="form-check-input position-static task-status" type="checkbox" id="blankCheckbox" value="option" checked disabled>
+		                <span class="text-muted small">It's done?</span>
+		            </div>
+		            <h6 class="heading task-title"><a href="#" class="title-anchor"> Sample Task </a></h6>
+		            <p class="desc task-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                        has been</p>
+		            <div class="bottom text-muted">
+		                <span class="bottom-left text-muted task-dueDate"><b>Planting date: </b>5 July, 2023</span>
+		                
+		            </div>
+		        </div>
+		    </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+			var dynamicCard = function(task){
+				const dueDate = new Date(task.dueDate);
+				const formattedDate = dueDate.toLocaleDateString('en-US', {
+				  day: '2-digit',
+				  month: 'short',
+				  year: 'numeric'
+				});
+				var status = task.status === "1"? "checked disabled": "";
+				
+				const now = new Date();
+				const dayNow = now.getDate();
+				var isDue = dueDate.getDate() - dayNow < 0 ? "text-danger": "text-muted";
+				return `
+				    <div class="card ${task.id}">
+						<span class="corner-id">#${task.id}</span>
+				        <div class="info">
+				            <div class="form-check mb-3">
+								<input type="hidden" class="form-control task-id" value="${task.id}">
+				                <input class="form-check-input position-static task-status" type="checkbox" id="blankCheckbox" ${status} value="option" aria-label="...">
+				                <span class="text-muted small">It's done?</span>
+				            </div>
+				            <input type="hidden" class="form-control h-task-title" value="${task.title}">
+				            <h6 class="heading task-title"><a href="#" class="title-anchor"> ${task.title} </a></h6>
+				            <input type="hidden" class="form-control h-task-description" value="${task.description}">
+				            <p class="desc task-description">${task.description}</p>
+				            <div class="bottom text-muted">
+				            	<input type="hidden" class="form-control h-task-dueDate" value="${formattedDate}">
+				                <span class="bottom-left task-dueDate ${isDue}"><b>Planting date: </b>${formattedDate}</span>`+
+				            `</div>
+				        </div>
+				    </div>
+				`
+			}
+			
+			
+            $.ajax({
+                url: root + "/taskByStatus/1",
+                type: "GET",
+                headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+	                "Authorization": 'Bearer ' + userDetails.accessToken
+				},
+                success: function (response) {
+                    // console.log(response);
+                    response.forEach(function (task) {
+                        $(".parent").append(dynamicCard(task));
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+     </script>

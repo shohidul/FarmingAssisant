@@ -1,1 +1,271 @@
-cropInformation
+<style>
+	.ml-8{
+		margin-left: -8px;
+	}
+	.ml8{
+		margin-left: 8px;
+	}
+	.list-p{
+		padding: 5px 15px;
+	}
+	.list-group-item:hover{
+		z-index: 2;
+		color: #fff;
+		background-color: #007bff;
+		border-color: #007bff;
+	}
+	.file {
+	  visibility: hidden;
+	  position: absolute;
+	}
+	background-text{
+        font-size:30px;
+        font-weight:600;
+        color:#ccc;
+        position:absolute;
+        z-index:-1;
+        margin: 15px 0 0 15px;
+    }
+
+</style>
+<section>
+	<div class="row">
+	    <div class="col-md-6 mx-auto mt-5 text-center ">
+		    <h2>Select Season to Get Crop Suggestions:</h2>
+		    <form>
+		        <label for="season">Select Season:</label><br>
+		        <input type="radio" id="kharif" name="season" value="Kharif">
+		        <label for="kharif">Kharif</label>
+		        <input type="radio" id="rabi" name="season" value="Rabi">
+		        <label for="rabi">Rabi</label>
+		        <input type="radio" id="boro" name="season" value="Boro">
+		        <label for="boro">Boro</label><br><br>
+		    </form>
+		
+		    <h3>Crops Suggested:</h3>
+		    <div id="cropSuggestions"></div>
+	    </div>
+	</div>
+</section>
+<br><br>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+    
+        <!-- Modal content-->
+
+        <div class="modal-content">
+            <div class="modal-header">
+				 <h4 class="modal-title" id="Modaltitle">Create Task</h4>
+                <button type="button" id="modalCloseBtn" class="close" data-dismiss="modal">&times;</button>
+               
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="taskForm">
+                	<input type="hidden" class="form-control" id="taskId" >
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="name">Crop</label>
+                            <div class="col-sm-8">
+								<input type="text" class="form-control" readonly id="name">
+                            </div>         
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="description">Description :</label>
+                            <div class="col-sm-8">
+								<textarea class="form-control" id="description" rows="2" maxlength="255"></textarea>
+                            </div>         
+                    </div>
+		            <div class="form-group row">
+		                <label for="yieldEstimation" class="control-label col-sm-4">Yield Estimation</label>
+		                <div class="col-sm-8">
+		                	<input type="number" class="form-control" id="yieldEstimation">
+		                </div>
+		            </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="dueDate">Planting Date :</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="dueDate"  >
+                            </div> 
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="soilType">Soil Type</label>
+                        <div class="col-sm-8">
+                            
+                            <select  class="form-control" id="soilType">
+								<option value="">Select</option>
+                            </select>   
+                        </div>
+                    </div>
+					<div class="form-group row">
+				        <label class="control-label col-sm-4" for="climateType">Climate Type</label>
+				        <div class="col-sm-8">
+				            <select class="form-control" id="climateType">
+				                <option value="">Select</option>
+				                <option value="Tropical">Tropical</option>
+				                <option value="Dry">Dry</option>
+				                <option value="Temperate">Temperate</option>
+				                <option value="Continental">Continental</option>
+				                <option value="Polar">Polar</option>
+				                <option value="Highland">Highland</option>
+				            </select>
+				        </div>
+				    </div>
+                     <div class="form-group">
+					      <div class="col-sm-8 custom-control custom-checkbox mr-sm-2">
+					        <input type="checkbox" class="custom-control-input" id="taskStatus">
+					        <label class="custom-control-label" for="taskStatus">Task Status</label>
+					     </div>
+					 </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="addBtn">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('input[name="season"]').on('change', function () {
+                const season = $('input[name="season"]:checked').val();
+                let cropSuggestions = "";
+
+                if (season === "Kharif") {
+                    cropSuggestions = "Rice (Paddy), Jute, Mung Beans, Soybeans, Sesame, Vegetables";
+                } else if (season === "Rabi") {
+                    cropSuggestions = "Wheat, Barley, Mustard, Linseed, Chickpeas, Vegetables";
+                } else if (season === "Boro") {
+                    cropSuggestions = "Boro Rice (Winter Rice)";
+                }
+
+                const cropSuggestionsDiv = $("#cropSuggestions");
+                cropSuggestionsDiv.empty(); // Clear previous suggestions
+
+                // Display crop suggestions as radio buttons
+                const cropList = cropSuggestions.split(", ");
+                for (const crop of cropList) {
+                    const cropRadio = $("<input>").attr({
+                        type: "radio",
+                        name: "selectedCrop",
+                        value: crop,
+                        id: crop.toLowerCase().replace(" ", "_"),
+                    });
+                    const cropLabel = $("<label>").attr("for", crop.toLowerCase().replace(" ", "_")).text(crop);
+
+                    cropSuggestionsDiv.append(cropRadio);
+                    cropSuggestionsDiv.append(cropLabel);
+                    cropSuggestionsDiv.append("<br>");
+                }
+
+                // Clear soil type selection and hide calculator on season change
+                $("#cropCalculator").hide();
+                $("#soilType").empty();
+            });
+
+            // Show the crop calculator when a crop is selected
+            $(document).on('change', 'input[name="selectedCrop"]', function () {
+                const selectedCrop = $('input[name="selectedCrop"]:checked').val();
+                if (selectedCrop) {
+                	$("#name").val(selectedCrop);
+                    // Show calculator
+                    $("#myModal").modal('show');
+
+                    // Update soil types based on the selected crop
+                    const soilTypes = getSoilTypesForCrop(selectedCrop);
+                    const soilTypeSelect = $("#soilType");
+                    soilTypeSelect.empty(); // Clear previous options
+                    for (const soilType of soilTypes) {
+                        const option = $("<option>").attr("value", soilType).text(soilType);
+                        soilTypeSelect.append(option);
+                    }
+                } else {
+                    // Hide calculator
+                    $("#cropCalculator").hide();
+                }
+            });
+
+            // Helper function to get soil types for a selected crop
+            function getSoilTypesForCrop(crop) {
+                const soilTypesByCrop = {
+                    "Rice (Paddy)": ["Alluvial", "Peat"],
+                    "Jute": ["Alluvial"],
+                    "Mung Beans": ["Alluvial"],
+                    "Soybeans": ["Alluvial"],
+                    "Sesame": ["Alluvial"],
+                    "Vegetables": ["Alluvial"],
+                    "Wheat": ["Alluvial", "Grey", "Red", "Terrace"],
+                    "Barley": ["Alluvial", "Grey", "Red", "Terrace"],
+                    "Mustard": ["Alluvial", "Grey", "Red", "Terrace"],
+                    "Linseed": ["Alluvial", "Grey", "Red", "Terrace"],
+                    "Chickpeas": ["Alluvial", "Grey", "Red", "Terrace"],
+                    "Boro Rice (Winter Rice)": ["Alluvial", "SalineAlkaline"]
+                };
+
+                return soilTypesByCrop[crop] || [];
+            }
+
+            // Submit the crop calculator form (you can add your calculation logic here)
+            $("#cropForm").submit(function (event) {
+                event.preventDefault();
+                const yieldEstimation = $("#yieldEstimation").val();
+                const plantingDate = $("#plantingDate").val();
+                const soilType = $("#soilType").val();
+                const climateType = $("#climateType").val();
+
+                // Add your logic here to handle the submitted data
+                console.log("Selected Crop: ", $('input[name="selectedCrop"]:checked').val());
+                console.log("Yield Estimation: ", yieldEstimation);
+                console.log("Planting Date: ", plantingDate);
+                console.log("Soil Type: ", soilType);
+                console.log("Climate Type: ", climateType);
+
+                // Reset the form after submission
+                $("#taskForm")[0].reset();
+                $("#cropCalculator").hide();
+            });
+            
+            $("#addBtn").click(function () {
+                var data ={
+                    "title": $("#name").val(),
+                    "description": $("#description").val(),
+                    "dueDate": $("#dueDate").val(),
+                    "soilType": $("#soilType").val(),
+                    "climateType": $("#climateType").val(),
+                    "status": $("#taskStatus").is(":checked") ? "1":"0"    
+                }
+
+                console.log(JSON.stringify(data));
+
+                var url = root + "/task";
+                var method = 'post';
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: JSON.stringify(data),
+	                headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+		                "Authorization": 'Bearer ' + userDetails.accessToken
+					},
+                    success: function (task) {
+                        //console.log(task);
+                        alertify.success('Task created successfully!');   
+                        getAllTasksByStatus();
+
+                        $("#taskForm")[0].reset();
+                        $("#modalCloseBtn").trigger("click");
+                     },
+                    error: function (error) {
+                        swal(error.responseText);
+                    }
+                });
+                
+            });
+        });
+        
+        
+    </script>
