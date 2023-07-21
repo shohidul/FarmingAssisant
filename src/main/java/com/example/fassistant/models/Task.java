@@ -18,6 +18,7 @@ public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private Long cropId;
 	private String title;
 	private String description;
 	private double yield;
@@ -46,6 +47,14 @@ public class Task {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getCropId() {
+		return cropId;
+	}
+
+	public void setCropId(Long cropId) {
+		this.cropId = cropId;
 	}
 
 	public String getTitle() {
@@ -146,9 +155,9 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", yield=" + yield
-				+ ", dueDate=" + dueDate + ", collectionDate=" + collectionDate + ", soilType=" + soilType
-				+ ", climateType=" + climateType + ", createdBy=" + createdBy + ", assignedTo=" + assignedTo
+		return "Task [id=" + id + ", cropId=" + cropId + ", title=" + title + ", description=" + description
+				+ ", yield=" + yield + ", dueDate=" + dueDate + ", collectionDate=" + collectionDate + ", soilType="
+				+ soilType + ", climateType=" + climateType + ", createdBy=" + createdBy + ", assignedTo=" + assignedTo
 				+ ", status=" + status + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 

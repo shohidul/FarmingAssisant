@@ -118,7 +118,7 @@
                     aria-hidden="true"></i></a> -->
         </div>
         <div class="parent">
-		    <div class="card ${task.id}">
+		 <!-- <div class="card ${task.id}">
 				<span class="corner-id">#1</span>
 		        <div class="info">
 		            <div class="form-check mb-3">
@@ -135,7 +135,7 @@
 		            		<a onclick='editTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteTask("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>
 		           	 	</div>
 		            </div>
-		        </div>
+		        </div> -->
 		    </div>
         </div>
     </div>
@@ -148,7 +148,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-				 <h4 class="modal-title" id="Modaltitle">Create Task</h4>
+				 <h4 class="modal-title" id="Modaltitle">Update Task</h4>
                 <button type="button" id="modalCloseBtn" class="close" data-dismiss="modal">&times;</button>
                
             </div>
@@ -156,15 +156,22 @@
                 <form class="form-horizontal" id="taskForm">
                 	<input type="hidden" class="form-control" id="taskId" >
                     <div class="form-group row">
-                        <label class="control-label col-sm-4" for="name">Crop</label>
+                        <label class="control-label col-sm-4" for="cropId">Crop ID</label>
                             <div class="col-sm-8">
-								<input type="text" class="form-control" readonly id="name">
+								<input type="text" class="form-control" readonly id="cropId">
+                            </div>         
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="name">Title</label>
+                            <div class="col-sm-8">
+								<input type="text" class="form-control" id="name">
                             </div>         
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-sm-4" for="description">Description :</label>
                             <div class="col-sm-8">
 								<textarea class="form-control" id="description" rows="2" maxlength="255"></textarea>
+								<div id="cropInfo"></div>
                             </div>         
                     </div>
 		            <div class="form-group row">
@@ -215,6 +222,7 @@
                 </form>
             </div>
             <div class="modal-footer">
+            	<button type="button" class="btn btn-primary" id="calcBtn">Calculate</button>
                 <button type="button" class="btn btn-primary" id="addBtn">Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
@@ -226,7 +234,9 @@
     <script>
 		
         $(document).ready(function () {
+        	
 			var dynamicCard = function(task){
+				
 				const dueDate = new Date(task.dueDate);
 				const formattedDate = dueDate.toLocaleDateString('en-US', {
 				  day: '2-digit',
@@ -235,9 +245,8 @@
 				});
 				var status = task.status === "1"? "checked disabled": "";
 				
-				const now = new Date();
-				const dayNow = now.getDate();
-				var isDue = dueDate.getDate() - dayNow < 0 ? "text-danger": "text-muted";
+				const isPassed = isDatePassed(dueDate);
+				var isDue = isPassed ? "text-danger": "text-muted";
 				return `
 				    <div class="card ${task.id}">
 						<span class="corner-id">#${task.id}</span>
@@ -320,8 +329,84 @@
 				  }
 				});
 			});	
+            
+        	var crops = [];
+        	function getCrops(){
+	       		$.ajax({
+	       		    url: root + "/crop",
+	       		    type: "GET",
+	       		    headers: {
+	       				'Accept': 'application/json',
+	       				'Content-Type': 'application/json',
+	       		        "Authorization": 'Bearer ' + userDetails.accessToken
+	       			},
+	       		    success: function (response) {
+	       		        console.log(response);
+	       		        crops = response;
+	       		    },
+	       		    error: function (error) {
+	       		        console.log(error);
+	       		    }
+	       		});
+	       	}
+	       	getCrops();
+            
+            $("#calcBtn").click(function () {
+                const cropId = $("#cropId").val();
+                const cropName = $("#name").val();
+                const yieldValue = parseFloat($("#yieldEstimation").val());
+
+                if (isNaN(yieldValue) || yieldValue <= 0) {
+                    alert("Please enter a valid yield value (greater than 0).");
+                    return;
+                }
+                
+                function getCropDetailsById(cropId) {
+                    const crop = crops.find(crop => crop.id == cropId);
+                    return crop ? { timeToMaturity: crop.timeToMaturity, seedRequirements: crop.seedRequirements, pesticides: crop.pesticides } : null;
+                }
+
+                //let timeToMaturity, seedRequirements;
+                const cropDetails = getCropDetailsById(cropId);
+                
+                if (cropDetails) {
+                	const { timeToMaturity, seedRequirements, pesticides } = cropDetails;
+                    //timeToMaturity = timeToMaturity;
+                    //seedRequirements = seedRequirements;
+
+                    console.log(`Time to Maturity: ${timeToMaturity}`);
+                    console.log(`Seed Requirements: ${seedRequirements}`);
+                    console.log(`Yield (in kg/hectare): ${yieldValue}`);
+
+                    // Calculate total seeds
+                    const seedRate = parseFloat(seedRequirements.split(" ")[0]);
+                    const totalSeeds = yieldValue * seedRate;
+                    console.log(`Total Seeds Required: ${totalSeeds.toFixed(2)} kg`);
+                    
+                    var description = $("#description").val();
+                    
+                    var estimation = `Time to Maturity: ${timeToMaturity} \nSeed Requirements: ${seedRequirements} \nYield (in kg/hectare): ${yieldValue} \nTotal Seeds Required: ${totalSeeds.toFixed(2)} kg \nPesticides used: ${pesticides}`;
+                    if(description){
+                    	$("#description").val(description+`\n\n`+estimation);
+                    }else{
+                    	$("#description").val(estimation);
+                    }
+                    
+                    const cropInfoDiv = $("#cropInfo");
+                    cropInfoDiv.empty(); // Clear previous information
+                    cropInfoDiv.append(`<p class="m-0 small"><b>Time to Maturity:</b> ${timeToMaturity}</p>`);
+                    cropInfoDiv.append(`<p class="m-0 small"><b>Seed Requirements:</b> ${seedRequirements}</p>`);
+                    cropInfoDiv.append(`<p class="m-0 small"><b>Yield (in kg/hectare):</b> ${yieldValue}</p>`);
+                    cropInfoDiv.append(`<p class="m-0 small"><b>Total Seeds Required:</b> ${totalSeeds.toFixed(2)} kg</p>`);
+                    cropInfoDiv.append(`<p class="m-0 small"><b>Pesticides used:</b> ${pesticides}</p>`);
+                } else {
+                	cropInfoDiv.append(`<p><b>No information found for the crop "${cropName}".</b></p>`);
+                }
+            });
+            
             $("#addBtn").click(function () {
                 var data ={
+                		"cropId": $("#cropId").val(),
                         "title": $("#name").val(),
                         "description": $("#description").val(),
                         "yield": $("#yieldEstimation").val(),
@@ -380,52 +465,14 @@
 
         });
 
-		 function showSummary(task) {	
-			 var desc = task.description.split("\n");
-			 var desc2 = [];
-			 for (let d in desc) {
-			     var line = desc[d].split(":");
-			     desc2 += `<p class="text-muted m-0 small"><b>${line[0]}:</b> ${line[1]}</p>`;
-			 }
-			 
-				if(!alertify.myAlert){
-				  //define a new dialog
-				  alertify.dialog('myAlert',function factory(){
-				    return{
-				      main:function(message){
-				        this.message = message;
-				      },
-				      setup:function(){
-				          return { 
-				            buttons:[{text: "cool!", key:27}],
-				            //focus: { element:0 },
-				          	options: {
-		                        title: "Details"
-		                    }
-				          };
-				      },
-				      prepare:function(){
-				        this.setContent(this.message);
-				      }
-				  }});
-				}
-				//launch it.
-				alertify.myAlert(
-						`
-		            <h6 class="heading task-title">${task.title} #${task.id}</h6>
-		            <p class="desc task-description">${desc2}</p><br>
-		            <p class="text-muted small"><b>Planting date: </b>${task.dueDate}</p>
-		            <p class="text-muted small"><b>Collection date: </b>${task.collectionDate}</p>
-		            <p class="text-muted small"><b>Yield Estimation: </b>${task.yield}</p>
-		            <p class="text-muted small"><b>Pesticides: </b></p>
-					`		
-				);
-		}
         function editTask(task){
         	console.log(task);
         	$("#myModal").modal('show');
             
+        	const cropInfoDiv = $("#cropInfo");
+            cropInfoDiv.empty();
             $("#taskId").val(task.id);
+            $("#cropId").val(task.cropId);
             $("#name").val(task.title);
             $("#description").val(task.description);
             $("#dueDate").val(task.dueDate);

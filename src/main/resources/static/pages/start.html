@@ -45,17 +45,17 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<form>
+				<form id="feedbackForm">
 				  <div class="form-row">
 				  	<div class="col-md-3"></div>
 				    <div class="col-md-6 mb-3">
-				      <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Write your experience here..." rows="3"></textarea>
+				      <textarea class="form-control" id="feedback" placeholder="Write your experience here..." rows="3"></textarea>
 				    </div>
 				    <div class="col-md-3"></div>
 				  </div>
 				  <div class="form-row">
 				  <div class="col-md-3"></div>
-				  <div class="col-md-6"><button class="btn btn-primary" type="submit">Submit</button></div>
+				  <div class="col-md-6"><button class="btn btn-primary" type="submit" id="feedbackBtn">Submit</button></div>
 				  <div class="col-md-3"></div>
 				  	
 				  </div>
@@ -66,7 +66,10 @@
 	<div class="col-md-1"></div>
 	<div class="col-md-3 glass-bg">
 		<h5>Daily Reminders</h5>
-		<div id="notificationPanel"></div>
+		<small class="text-muted">Remainder will be shown if planting date is tomorrow and after 2 days if not marked done.</small>
+		<div id="notificationPanel">
+			No reminders to show.
+		</div>
 	</div>
 </div>
 
@@ -118,9 +121,9 @@
 
   // Display the chart using the configuration items and data just specified.
   myChart.setOption(option);
-
 		
 		function checkTaskReminder (){
+			
 			const dayRemaining = 2;
 			const now = new Date();
 			const dayNow = now.getDate();
@@ -132,7 +135,7 @@
 	                if(yearNow === dueDate.getFullYear()){
 						if(monthNow === dueDate.getMonth()){
 							if(dueDate.getDate() - dayNow < dayRemaining){
-								console.log(dueDate.getDate() - dayNow);
+								$("#notificationPanel").empty();
 								if(dueDate.getDate() - dayNow > -2){
 									
 									 var text = `
@@ -169,25 +172,14 @@
 		
 		setTimeout(checkTaskReminder, 500);
 		
-		/*function updateNotificationCount(count, task, text){
-			$.ajax({
-	            url: root + "/updateTaskNotification/"+task.id ,
-	            type: 'PUT',
-	            data: JSON.stringify({"count": count}),
-	            headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-		                "Authorization": 'Bearer ' + userDetails.accessToken
-				},
-	            success: function (result) {
-				 
-				  $("#notificationPanel").append(text);
-	              getAllTasksByStatus();
-	            },
-	            error: function (error) {
-	                console.log(error);
-	            }
-	        });	
-		}*/
+		$("#feedbackBtn").click(function(){
+			var feedback = $("#feedback").val();
+			if(feedback){
+				$("#feedbackForm")[0].reset();
+				alertify.success('Feedback submitted successfully!');
+			}else{
+				alert("Please write your experience.");
+			}
+		});
 		
 </script>

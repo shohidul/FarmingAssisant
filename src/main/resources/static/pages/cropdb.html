@@ -1,0 +1,343 @@
+<style>
+	.ml-8{
+		margin-left: -8px;
+	}
+	.ml8{
+		margin-left: 8px;
+	}
+	.list-p{
+		padding: 5px 15px;
+	}
+	.list-group-item:hover{
+		z-index: 2;
+		color: #fff;
+		background-color: #007bff;
+		border-color: #007bff;
+	}
+	.file {
+	  visibility: hidden;
+	  position: absolute;
+	}
+	background-text{
+        font-size:30px;
+        font-weight:600;
+        color:#ccc;
+        position:absolute;
+        z-index:-1;
+        margin: 15px 0 0 15px;
+    }
+    .edit-btn:hover{
+		color:blue  ;
+		cursor: pointer;
+	}
+     
+	.delete-btn:hover{
+		color: red;
+		cursor: pointer;
+	}
+	.table-parent{
+		height: 425px;
+		overflow-y: auto;
+	}
+</style>
+
+<section>
+	<h4 class="ml-8">Crops Database</h4>
+	<br>
+	<div class="row">
+	    <div class="col-md-5">
+	        <form id="cropForm">
+	            <div class="form-group row">
+	            	<input type="hidden" class="form-control" id="cropId" value="">
+	                <label for="name" class="form-control-sm form-control-sm col-sm-4">Name</label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="name" aria-describedby="Name">
+	            </div>
+	            <div class="form-group row">
+	                <label for="timeToMaturity" class="form-control-sm col-sm-4">Time To Maturity</label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="timeToMaturity">
+	            </div>
+	            <div class="form-group row">
+	                <label for="seedRequirements" class="form-control-sm col-sm-4">Seed Requirements</label>
+	                <input type="text" class="form-control form-control-sm col-sm-6" id="seedRequirements">
+	            </div>
+           		<div class="form-group row">
+			        <label class="form-control-sm form-control-sm col-sm-4" for="">Suitable Seasons</label>
+			        <div class="col-sm-6">
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input season-check" type="checkbox" id="seasonCheckbox1" value="Kharif">
+						  <label class="form-check-label" for="seasonCheckbox1">Kharif</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input season-check" type="checkbox" id="seasonCheckbox2" value="Rabi">
+						  <label class="form-check-label" for="seasonCheckbox2">Rabi</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input season-check" type="checkbox" id="seasonCheckbox3" value="Boro">
+						  <label class="form-check-label" for="seasonCheckbox3">Boro</label>
+						</div>
+			        </div>
+			    </div>
+           		<div class="form-group row">
+			        <label class="form-control-sm form-control-sm col-sm-4" for="">Suitable Soil Types</label>
+			        <div class="col-sm-6">
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input soil-check" type="checkbox" id="soilCheckbox1" value="Alluvial">
+						  <label class="form-check-label" for="soilCheckbox1">Alluvial</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input soil-check" type="checkbox" id="soilCheckbox2" value="Grey">
+						  <label class="form-check-label" for="soilCheckbox2">Grey</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input soil-check" type="checkbox" id="soilCheckbox3" value="Peat">
+						  <label class="form-check-label" for="soilCheckbox3">Peat</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input soil-check" type="checkbox" id="soilCheckbox4" value="Red">
+						  <label class="form-check-label" for="soilCheckbox4">Red</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input soil-check" type="checkbox" id="soilCheckbox5" value="SalineAlkaline">
+						  <label class="form-check-label" for="soilCheckbox5">SalineAlkaline</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input soil-check" type="checkbox" id="soilCheckbox6" value="Terrace">
+						  <label class="form-check-label" for="soilCheckbox6">Terrace</label>
+						</div>
+			        </div>
+			    </div>
+           		<div class="form-group row">
+			        <label class="form-control-sm form-control-sm col-sm-4" for="">Pesticides</label>
+			        <div class="col-sm-6">
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input pest-check" type="checkbox" id="pestCheckbox1" value="Insecticides">
+						  <label class="form-check-label" for="pestCheckbox1">Insecticides</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input pest-check" type="checkbox" id="pestCheckbox2" value="Fungicides">
+						  <label class="form-check-label" for="pestCheckbox2">Fungicides</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input pest-check" type="checkbox" id="pestCheckbox3" value="Herbicides">
+						  <label class="form-check-label" for="pestCheckbox3">Herbicides</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input pest-check" type="checkbox" id="pestCheckbox4" value="Rodenticides">
+						  <label class="form-check-label" for="pestCheckbox4">Rodenticides</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input pest-check" type="checkbox" id="pestCheckbox5" value="Nematicides">
+						  <label class="form-check-label" for="pestCheckbox5">Nematicides</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input pest-check" type="checkbox" id="pestCheckbox6" value="Bactericides">
+						  <label class="form-check-label" for="pestCheckbox6">Bactericides</label>
+						</div>
+			        </div>
+			    </div>
+
+
+				<div class="form-group row">
+					<label for="addBtn" class="form-control-sm col-sm-4"></label>
+					<div class="col-sm-6 p-0">
+						<button type="reset" class="btn btn-danger float-right">Reset</button>
+	            		<button type="button" class="btn btn-primary float-right mr-2" id="addBtn">Save</button>
+	            	</div>
+	            </div>
+	        </form>
+	    </div>
+	
+	    <div class="col-md-7">
+	    	<div class="table-parent">
+				<table class="table table-striped table-hover small">
+				  <thead>
+				    <tr>
+				      <th scope="col">#</th>
+				      <th scope="col">Name</th>
+				      <th scope="col">Time To Maturity</th>
+				      <th scope="col">Seed Requirements</th>
+				      <th scope="col">Suitable Seasons</th>
+				      <th scope="col">Suitable Soil Types</th>
+				      <th scope="col">Pesticides</th>
+				      <th scope="col">Actions</th>
+				    </tr>
+				  </thead>
+				  <tbody id="tbody"></tbody>
+				</table>
+			</div>
+	    </div>
+	</div>
+</section>
+
+
+<script>
+	var dynamicRow = function(crop){
+
+		return `
+		    <tr class="${crop.id}">
+		      <th scope="row">${crop.id}</th>
+		      <td>${crop.name}</td>
+		      <td>${crop.timeToMaturity}</td>
+		      <td>${crop.seedRequirements}</td>
+		      <td>${crop.suitableSeasons}</td>
+		      <td>${crop.suitableSoilTypes}</td>
+		      <td>${crop.pesticides}</td>
+		      <td class="text-center">
+		      <a onclick='editCrop(${JSON.stringify(crop)})' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;
+		      <a onclick='deleteCrop(${crop.id})' class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>
+			  </td>
+		    </tr>
+		`
+	}
+	
+    function setCheckedCheckboxes(selector, selectedValues) {
+  	  $(selector).each(function() {
+  	    if (selectedValues.includes($(this).val())) {
+  	      $(this).prop("checked", true);
+  	    } else {
+  	      $(this).prop("checked", false);
+  	    }
+  	  });
+  	}
+	
+    function editCrop(crop){
+    	console.log(crop);       
+        $("#cropId").val(crop.id);
+        $("#name").val(crop.name);
+        $("#timeToMaturity").val(crop.timeToMaturity);
+        $("#seedRequirements").val(crop.seedRequirements);
+        	
+       	const selectedSuitableSeasons = crop.suitableSeasons; 
+        setCheckedCheckboxes(".season-check", selectedSuitableSeasons.split(","));
+       	const selectedSuitableSoilTypes = crop.suitableSoilTypes; 
+        setCheckedCheckboxes(".soil-check", selectedSuitableSoilTypes.split(","));
+       	const selectedPesticides = crop.pesticides; 
+        setCheckedCheckboxes(".pest-check", selectedPesticides.split(","));
+    }
+    
+    function deleteCrop(id){
+		swal({
+		  title: "Are you sure?",
+		  text: "Do you want to delete this crop #"+id+"?",
+		  icon: "warning",
+		  buttons: true,
+		  dangerMode: true,
+		})
+		.then((willDelete) => {
+		  if (willDelete) {
+            $.ajax({
+	            url: root + "/crop/"+id ,
+	            type: 'DELETE',
+	            headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+		                "Authorization": 'Bearer ' + userDetails.accessToken
+				},
+	            success: function (result) {
+	            	getCrops();
+	                
+	                swal("Task has been deleted!", {
+				      icon: "success",
+				    });
+	            },
+	            error: function (error) {
+	                swal(error.responseText);
+	            }
+	        });
+		  }
+		});
+	}
+	
+	function getCrops(){
+		 $("#tbody").empty();
+		$.ajax({
+		    url: root + "/crop",
+		    type: "GET",
+		    headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+		        "Authorization": 'Bearer ' + userDetails.accessToken
+			},
+		    success: function (response) {
+		        // console.log(response);
+		        response.forEach(function (crop) {
+		            $("#tbody").append(dynamicRow(crop));
+		        })
+		    },
+		    error: function (error) {
+		        console.log(error);
+		    }
+		});
+	}
+	getCrops();
+
+
+    $("#addBtn").click(function () {
+        function getSelectedValues(selector) {
+            const selectedValues = [];
+            $(selector).each(function() {
+                if ($(this).is(":checked")) {
+                    selectedValues.push($(this).val());
+                }
+            });
+            return selectedValues.join(",");
+        }
+        const selectedSeasons = getSelectedValues(".season-check");
+        const selectedSoilTypes = getSelectedValues(".soil-check");
+        const selectedPesticides = getSelectedValues(".pest-check");
+        console.log(selectedSeasons);
+        console.log(selectedSoilTypes);
+        console.log(selectedPesticides);
+        
+        var data ={
+                "name": $("#name").val(),
+                "timeToMaturity": $("#timeToMaturity").val(),
+                "seedRequirements": $("#seedRequirements").val(),
+                "suitableSeasons": selectedSeasons,
+                "suitableSoilTypes": selectedSoilTypes,
+                "pesticides": selectedPesticides,
+            }
+
+        var url = root + "/crop";
+        var method = 'post';
+
+        var id = $("#cropId").val();
+ 
+        if(id){
+            data.id = id;
+            url = root + "/crop/"+id ;
+            method = 'put';
+        }
+        
+        $.ajax({
+            url: url,
+            type: method,
+            data: JSON.stringify(data),
+            headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + userDetails.accessToken
+			},
+            success: function (crop) {
+                console.log(crop);
+                if(id){                    
+                    alertify.success('Crop updated successfully!');
+                }else{
+                    alertify.success('Crop created successfully!');   
+                }
+                getCrops();
+                $("#cropForm")[0].reset();
+             },
+            error: function (error) {
+                swal(error.responseText);
+            }
+        });
+        
+    });
+
+
+	
+	
+	
+		
+</script>

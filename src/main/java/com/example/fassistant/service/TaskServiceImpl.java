@@ -45,6 +45,9 @@ public class TaskServiceImpl implements TaskService {
 		java.util.Optional<Task>task1=taskRepository.findById(id);
 		if(task1.isPresent()) {
 			Task originalTask=task1.get();
+			if (Objects.nonNull(task.getCropId())) {
+				originalTask.setCropId(task.getCropId());
+			}
 			if (Objects.nonNull(task.getTitle()) && !"".equalsIgnoreCase(task.getTitle())) {
 				originalTask.setTitle(task.getTitle());
 				System.out.println(task.getTitle() + "task");
@@ -61,9 +64,6 @@ public class TaskServiceImpl implements TaskService {
 			if (Objects.nonNull(task.getCollectionDate())) {
 				originalTask.setCollectionDate(task.getCollectionDate());
 			}
-//			if (Objects.nonNull(task.getPriprityLevel()) && !"".equalsIgnoreCase(task.getPriprityLevel())) {
-//				originalTask.setPriprityLevel(task.getPriprityLevel());
-//			}
 			if (Objects.nonNull(task.getSoilType()) && !"".equalsIgnoreCase(task.getSoilType())) {
 				originalTask.setSoilType(task.getSoilType());
 			}
@@ -73,9 +73,6 @@ public class TaskServiceImpl implements TaskService {
 			if (Objects.nonNull(task.getCreatedBy()) && task.getCreatedBy() != 0) {
 				originalTask.setCreatedBy(task.getCreatedBy());
 			}
-//			if (Objects.nonNull(task.getAssignedTo()) && task.getAssignedTo() != 0) {
-//				originalTask.setAssignedTo(task.getAssignedTo());
-//			}
 			if (Objects.nonNull(task.getCreatedDate())) {
 				originalTask.setCreatedDate(task.getCreatedDate());
 			}

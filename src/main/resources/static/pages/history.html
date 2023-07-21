@@ -101,6 +101,12 @@
 		    text-align: center;
 		    border: 1px solid green;
 		}
+		.title-anchor{
+			cursor: pointer;
+		}
+		.ajs-dialog{
+			min-height: 400px !important
+		}
     </style>
 
      <!-- card -->
@@ -109,7 +115,7 @@
             <span class="title-left text-center">Task History</span>
         </div>
         <div class="parent">
-		    <div class="card ${task.id}">
+		<!--    <div class="card ${task.id}">
 				<span class="corner-id">#1</span>
 		        <div class="info">
 		            <div class="form-check mb-3">
@@ -125,13 +131,14 @@
 		                
 		            </div>
 		        </div>
-		    </div>
+		    </div> -->
         </div>
     </div>
     <script type="text/javascript">
 
 
         $(document).ready(function () {
+        	
 			var dynamicCard = function(task){
 				const dueDate = new Date(task.dueDate);
 				const formattedDate = dueDate.toLocaleDateString('en-US', {
@@ -141,9 +148,8 @@
 				});
 				var status = task.status === "1"? "checked disabled": "";
 				
-				const now = new Date();
-				const dayNow = now.getDate();
-				var isDue = dueDate.getDate() - dayNow < 0 ? "text-danger": "text-muted";
+				const isPassed = isDatePassed(dueDate);
+				var isDue = isPassed ? "text-danger": "text-muted";
 				return `
 				    <div class="card ${task.id}">
 						<span class="corner-id">#${task.id}</span>
@@ -154,7 +160,7 @@
 				                <span class="text-muted small">It's done?</span>
 				            </div>
 				            <input type="hidden" class="form-control h-task-title" value="${task.title}">
-				            <h6 class="heading task-title"><a href="#" class="title-anchor"> ${task.title} </a></h6>
+				            <h6 class="heading task-title"><a onclick='showSummary(${JSON.stringify(task)})' class="title-anchor"> ${task.title} </a></h6>
 				            <input type="hidden" class="form-control h-task-description" value="${task.description}">
 				            <p class="desc task-description">${task.description}</p>
 				            <div class="bottom text-muted">
@@ -185,5 +191,7 @@
                     console.log(error);
                 }
             });
+            
+
         })
      </script>

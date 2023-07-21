@@ -30,16 +30,16 @@
 </style>
 <section>
 	<div class="row">
-	    <div class="col-md-6 mx-auto mt-5 text-center ">
+	    <div class="col-md-6 mx-auto mt-3 text-center ">
+	    	<a class="btn btn-primary" id="cropdb"	href="#">Crop Database</a><br><br>
 		    <h2>Select Season to Get Crop Suggestions:</h2>
 		    <form>
-		        <label for="season">Select Season:</label><br>
 		        <input type="radio" id="kharif" name="season" value="Kharif">
-		        <label for="kharif">Kharif</label>
+		        <label for="kharif">Kharif <small class="text-muted">(Mid June to October, Monsoon Season)</small></label><br>
 		        <input type="radio" id="rabi" name="season" value="Rabi">
-		        <label for="rabi">Rabi</label>
+		        <label for="rabi">Rabi <small class="text-muted">(November to February, Winter Season)</small></label><br>
 		        <input type="radio" id="boro" name="season" value="Boro">
-		        <label for="boro">Boro</label><br><br>
+		        <label for="boro">Boro <small class="text-muted">(November to April, Dry Season)</small></label><br><br>
 		    </form>
 		
 		    <h3>Crops Suggested:</h3>
@@ -64,9 +64,15 @@
                 <form class="form-horizontal" id="taskForm">
                 	<input type="hidden" class="form-control" id="taskId" >
                     <div class="form-group row">
-                        <label class="control-label col-sm-4" for="name">Crop</label>
+                        <label class="control-label col-sm-4" for="cropId">Crop ID</label>
                             <div class="col-sm-8">
-								<input type="text" class="form-control" readonly id="name">
+								<input type="text" class="form-control" readonly id="cropId">
+                            </div>         
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="name">Title</label>
+                            <div class="col-sm-8">
+								<input type="text" class="form-control" id="name">
                             </div>         
                     </div>
                     <div class="form-group row">
@@ -136,99 +142,124 @@
     </div>
     <script>
         $(document).ready(function () {
-        	const crops = {
+        	
+    		$("#cropdb").click(function() {
+    			loadPage("cropdb");
+    		});
+    		
+        	/*const crops = {
         		    "Rice (Paddy)": {
         		        timeToMaturity: "3-6 months",
         		        seedRequirements: "100-150 kg per hectare",
         		        suitableSeasons: ["Kharif"],
-        		        suitableSoilTypes: ["Alluvial", "Peat"]
+        		        suitableSoilTypes: ["Alluvial", "Peat"],
+        		        pesticides: ["Insecticides", "Fungicides"]
         		    },
         		    "Jute": {
         		        timeToMaturity: "4-5 months",
         		        seedRequirements: "20-30 kg per hectare",
         		        suitableSeasons: ["Kharif"],
-        		        suitableSoilTypes: ["Alluvial"]
+        		        suitableSoilTypes: ["Alluvial"],
+        		        pesticides: ["Insecticides", "Fungicides"]
         		    },
         		    "Mung Beans": {
         		        timeToMaturity: "2-3 months",
         		        seedRequirements: "25-35 kg per hectare",
         		        suitableSeasons: ["Kharif"],
-        		        suitableSoilTypes: ["Alluvial"]
+        		        suitableSoilTypes: ["Alluvial"],
+        		        pesticides: ["Insecticides"]
         		    },
         		    "Soybeans": {
         		        timeToMaturity: "2.5-4 months",
         		        seedRequirements: "40-60 kg per hectare",
         		        suitableSeasons: ["Kharif"],
-        		        suitableSoilTypes: ["Alluvial"]
+        		        suitableSoilTypes: ["Alluvial"],
+        		        pesticides: ["Insecticides"]
         		    },
         		    "Sesame": {
         		        timeToMaturity: "3-5 months",
         		        seedRequirements: "3-4 kg per hectare",
         		        suitableSeasons: ["Kharif"],
-        		        suitableSoilTypes: ["Alluvial"]
+        		        suitableSoilTypes: ["Alluvial"],
+        		        pesticides: ["Insecticides", "Fungicides"]
         		    },
         		    "Vegetables": {
         		        timeToMaturity: "1-3 months (varies by type)",
         		        seedRequirements: "Varies by type of vegetable",
         		        suitableSeasons: ["Kharif"],
-        		        suitableSoilTypes: ["Alluvial"]
+        		        suitableSoilTypes: ["Alluvial"],
+        		        pesticides: []
         		    },
         		    "Wheat": {
         		        timeToMaturity: "3-5 months",
         		        seedRequirements: "100-150 kg per hectare",
         		        suitableSeasons: ["Rabi"],
-        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"]
+        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"],
+        		        pesticides: ["Fungicides"]
         		    },
         		    "Barley": {
         		        timeToMaturity: "3-4 months",
         		        seedRequirements: "75-100 kg per hectare",
         		        suitableSeasons: ["Rabi"],
-        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"]
+        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"],
+        		        pesticides: []
         		    },
         		    "Mustard": {
         		        timeToMaturity: "2.5-4 months",
         		        seedRequirements: "3-4 kg per hectare",
         		        suitableSeasons: ["Rabi"],
-        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"]
+        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"],
+        		        pesticides: ["Insecticides", "Fungicides"]
         		    },
         		    "Linseed": {
         		        timeToMaturity: "3-4 months",
         		        seedRequirements: "25-35 kg per hectare",
         		        suitableSeasons: ["Rabi"],
-        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"]
+        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"],
+        		        pesticides: ["Insecticides"]
         		    },
         		    "Chickpeas": {
         		        timeToMaturity: "3-4 months",
         		        seedRequirements: "25-35 kg per hectare",
         		        suitableSeasons: ["Rabi"],
-        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"]
+        		        suitableSoilTypes: ["Alluvial", "Grey", "Red", "Terrace"],
+        		        pesticides: ["Insecticides"]
         		    },
         		    "Boro Rice (Winter Rice)": {
         		        timeToMaturity: "3-4 months",
         		        seedRequirements: "100-150 kg per hectare",
         		        suitableSeasons: ["Boro"],
-        		        suitableSoilTypes: ["Alluvial", "SalineAlkaline"]
+        		        suitableSoilTypes: ["Alluvial", "SalineAlkaline"],
+        		        pesticides: ["Insecticides", "Fungicides"]
         		    }
-        		};
-        	
-        	function getCropsBySeason(season) {
-        	    const cropsForSeason = [];
-        	    for (const cropName in crops) {
-        	        const crop = crops[cropName];
+        		};*/
+        	var crops = [];
+        	function getCrops(){
+	       		$.ajax({
+	       		    url: root + "/crop",
+	       		    type: "GET",
+	       		    headers: {
+	       				'Accept': 'application/json',
+	       				'Content-Type': 'application/json',
+	       		        "Authorization": 'Bearer ' + userDetails.accessToken
+	       			},
+	       		    success: function (response) {
+	       		        console.log(response);
+	       		        crops = response;
+	       		    },
+	       		    error: function (error) {
+	       		        console.log(error);
+	       		    }
+	       		});
+	       	}
+	       	getCrops();
 
-        	        if (crop.suitableSeasons.includes(season)) {
-        	            cropsForSeason.push(cropName);
-        	        }
-        	    }
-        	    return cropsForSeason;
+        	function getCropsBySeason(season) {
+        	    return crops.filter(crop => crop.suitableSeasons.includes(season));
         	}
-        	
-        	function getSoilTypesForCrop(cropName) {
-        	    const crop = crops[cropName];
-        	    if (!crop) {
-        	        return "No information found for the crop.";
-        	    }
-        	    return crop.suitableSoilTypes;
+        	function getSoilTypesForCropId(cropId) {
+        	    const crop = crops.find(crop => crop.id == cropId);
+        	    return crop ? crop.suitableSoilTypes : [];
         	}
         	
             $('input[name="season"]').on('change', function () {
@@ -243,10 +274,10 @@
                     const cropRadio = $("<input>").attr({
                         type: "radio",
                         name: "selectedCrop",
-                        value: crop,
-                        id: crop.toLowerCase().replace(" ", "_"),
+                        value: crop.id,
+                        id: crop.id,
                     });
-                    const cropLabel = $("<label>").attr("for", crop.toLowerCase().replace(" ", "_")).text(crop);
+                    const cropLabel = $("<label>").attr("for", crop.id).text(crop.name);
 
                     cropSuggestionsDiv.append(cropRadio);
                     cropSuggestionsDiv.append(cropLabel);
@@ -261,14 +292,19 @@
             // Show the crop calculator when a crop is selected
             $(document).on('change', 'input[name="selectedCrop"]', function () {
                 const selectedCrop = $('input[name="selectedCrop"]:checked').val();
+                console.log("selectedCrop "+selectedCrop);
+                const selectedCropLabel = $("label[for="+selectedCrop+"]").text();
                 if (selectedCrop) {
+                	console.log("selectedCrop1 "+selectedCrop);
                 	$("#taskForm")[0].reset();
                 	$("#cropInfo").text("");
-                	$("#name").val(selectedCrop);
+                	$("#cropId").val(selectedCrop);
+                	$("#name").val(selectedCropLabel);
                     $("#myModal").modal('show');
 
                     // Update soil types based on the selected crop
-                    const soilTypes = getSoilTypesForCrop(selectedCrop);
+                    const soilTypes = getSoilTypesForCropId(selectedCrop).split(",");
+                    console.log("soilTypes "+soilTypes);
                     const soilTypeSelect = $("#soilType");
                     soilTypeSelect.empty(); // Clear previous options
                     for (const soilType of soilTypes) {
@@ -279,6 +315,7 @@
             });
             
             $("#calcBtn").click(function () {
+                const cropId = $("#cropId").val();
                 const cropName = $("#name").val();
                 const yieldValue = parseFloat($("#yieldEstimation").val());
 
@@ -286,12 +323,19 @@
                     alert("Please enter a valid yield value (greater than 0).");
                     return;
                 }
-
-                let timeToMaturity, seedRequirements;
                 
-                if (cropName in crops) {
-                    timeToMaturity = crops[cropName].timeToMaturity;
-                    seedRequirements = crops[cropName].seedRequirements;
+                function getCropDetailsById(cropId) {
+                    const crop = crops.find(crop => crop.id == cropId);
+                    return crop ? { timeToMaturity: crop.timeToMaturity, seedRequirements: crop.seedRequirements, pesticides: crop.pesticides } : null;
+                }
+
+                //let timeToMaturity, seedRequirements;
+                const cropDetails = getCropDetailsById(cropId);
+                
+                if (cropDetails) {
+                    const { timeToMaturity, seedRequirements, pesticides } = cropDetails;
+                    //timeToMaturity = timeToMaturity;
+                    //seedRequirements = seedRequirements;
 
                     console.log(`Time to Maturity: ${timeToMaturity}`);
                     console.log(`Seed Requirements: ${seedRequirements}`);
@@ -304,7 +348,7 @@
                     
                     var description = $("#description").val();
                     
-                    var estimation = `Time to Maturity: ${timeToMaturity} \nSeed Requirements: ${seedRequirements} \nYield (in kg/hectare): ${yieldValue} \nTotal Seeds Required: ${totalSeeds.toFixed(2)} kg`;
+                    var estimation = `Time to Maturity: ${timeToMaturity} \nSeed Requirements: ${seedRequirements} \nYield (in kg/hectare): ${yieldValue} \nTotal Seeds Required: ${totalSeeds.toFixed(2)} kg \nPesticides used: ${pesticides}`;
                     if(description){
                     	$("#description").val(description+`\n\n`+estimation);
                     }else{
@@ -317,6 +361,7 @@
                     cropInfoDiv.append(`<p class="m-0 small"><b>Seed Requirements:</b> ${seedRequirements}</p>`);
                     cropInfoDiv.append(`<p class="m-0 small"><b>Yield (in kg/hectare):</b> ${yieldValue}</p>`);
                     cropInfoDiv.append(`<p class="m-0 small"><b>Total Seeds Required:</b> ${totalSeeds.toFixed(2)} kg</p>`);
+                    cropInfoDiv.append(`<p class="m-0 small"><b>Pesticides used:</b> ${pesticides}</p>`);
                 } else {
                 	cropInfoDiv.append(`<p><b>No information found for the crop "${cropName}".</b></p>`);
                 }
@@ -324,6 +369,7 @@
             
             $("#addBtn").click(function () {
                 var data ={
+                	"cropId": $("#cropId").val(),
                     "title": $("#name").val(),
                     "description": $("#description").val(),
                     "yield": $("#yieldEstimation").val(),

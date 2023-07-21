@@ -310,8 +310,6 @@ li a.active {
 				data-toggle="dropdown" href="#" role="button" aria-expanded="false">John
 					Doe</a>
 				<div class="dropdown-menu">
-					<!-- <a class="dropdown-item" id="cart" href="#cart">Cart</a> <a
-						class="dropdown-item" id="orders" href="#orders">Orders</a>  -->
 					<a class="dropdown-item" id="userProfile" href="#userProfile">User Profile</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#" id="signout">Sign out</a>
@@ -324,19 +322,14 @@ li a.active {
 					href="#weatherUpdates">Weather Updates</a></li>
 			<li class="nav-item"><a class="nav-link" id="taskMgt"
 					href="#task">Tasks</a></li>
-			<li class="nav-item"><a class="nav-link" id="marketPrice"
-					href="#marketPrice">Market Price</a></li>
+			<!-- <li class="nav-item"><a class="nav-link" id="marketPrice"
+					href="#marketPrice">Market Price</a></li>-->
 			<li class="nav-item"><a class="nav-link" id="knowledgeCorner"
 					href="#knowledgeCorner">Knowledge Corner</a></li>
 			<li class="nav-item"><a class="nav-link" id="pestControl"
 					href="#pestControl">Pest Control</a></li>
 			<li class="nav-item"><a class="nav-link" id="history"
 					href="#history">History</a></li>
-			<!-- <li class="nav-item"><a class="nav-link active" id="start"
-				href="#">Start</a></li> -->
-			<!-- <li class="nav-item"><a class="nav-link" id="shops" href="#">Outlets</a> -->
-			<!-- </li> -->
-			<!-- <li class="nav-item"><a class="nav-link" href="#siteFooter">Find us</a></li> -->
 			
 			<li class="nav-item"><a class="nav-link active" href="#start" id="start">Dashboard</a></li>
 		</ul>
@@ -595,7 +588,65 @@ li a.active {
 		}
 		*/
 
-
+    	function isDatePassed(date) {
+		  const currentDate = new Date();
+		  const inputDate = new Date(date);
+		
+		  if (inputDate < currentDate) {
+		    return true;
+		  } else {
+		    return false;
+		  }
+		}
+		
+     	function showSummary(task) {	
+  			 var desc = task.description.split("\n");
+  			 var desc2 = [];
+  			 for (let d in desc) {
+  			     var line = desc[d].split(":");
+  			     desc2 += `<p class="text-muted m-0 small"><b>${line[0]}:</b> ${line[1]}</p>`;
+  			 }
+  			 
+  			const dueDate = new Date(task.dueDate);
+  			var isDueDatePassed = isDatePassed(dueDate) ? "text-danger": "text-muted";
+  			
+  			const collectionDate = new Date(task.collectionDate);
+  			var isCollectionDatePassed = isDatePassed(collectionDate) ? "text-danger": "text-muted";
+  			
+        	
+  			 
+  				if(!alertify.myAlert){
+  				  //define a new dialog
+  				  alertify.dialog('myAlert',function factory(){
+  				    return{
+  				      main:function(message){
+  				        this.message = message;
+  				      },
+  				      setup:function(){
+  				          return { 
+  				            buttons:[{text: "cool!", key:27}],
+  				            //focus: { element:0 },
+  				          	options: {
+  		                        title: "Details"
+  		                    }
+  				          };
+  				      },
+  				      prepare:function(){
+  				        this.setContent(this.message);
+  				      }
+  				  }});
+  				}
+  				//launch it.
+  				alertify.myAlert(
+  						`
+  		            <h6 class="heading task-title">#${task.id} ${task.title}</h6>
+  		            <p class="desc task-description">${desc2}</p><br>
+  		            <p class="${isDueDatePassed} small"><b>Planting date: </b>${task.dueDate}</p>
+  		            <p class="${isCollectionDatePassed} small "><b>Collection date: </b>${task.collectionDate}</p>
+  		            <p class="text-muted small"><b>Yield Estimation: </b>${task.yield}</p>
+  					`		
+  				);
+		}
 	</script>
 </body>
 
