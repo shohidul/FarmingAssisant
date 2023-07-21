@@ -20,7 +20,9 @@ public class Task {
 	private Long id;
 	private String title;
 	private String description;
+	private double yield;
 	private Date dueDate;
+	private Date collectionDate;
 	private String soilType;
 	private String climateType;
 	private Long createdBy;
@@ -61,6 +63,14 @@ public class Task {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public double getYield() {
+		return yield;
+	}
+
+	public void setYield(double yield) {
+		this.yield = yield;
+	}
 
 	public Date getDueDate() {
 		return dueDate;
@@ -70,6 +80,14 @@ public class Task {
 		this.dueDate = dueDate;
 	}
 	
+	public Date getCollectionDate() {
+		return collectionDate;
+	}
+
+	public void setCollectionDate(Date collectionDate) {
+		this.collectionDate = collectionDate;
+	}
+
 	public String getSoilType() {
 		return soilType;
 	}
@@ -128,10 +146,10 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", dueDate=" + dueDate
-				+ ", soilType=" + soilType + ", climateType=" + climateType + ", createdBy=" + createdBy
-				+ ", assignedTo=" + assignedTo + ", status=" + status + ", createdDate=" + createdDate
-				+ ", updatedDate=" + updatedDate + "]";
+		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", yield=" + yield
+				+ ", dueDate=" + dueDate + ", collectionDate=" + collectionDate + ", soilType=" + soilType
+				+ ", climateType=" + climateType + ", createdBy=" + createdBy + ", assignedTo=" + assignedTo
+				+ ", status=" + status + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 
 }

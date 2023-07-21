@@ -52,8 +52,14 @@ public class TaskServiceImpl implements TaskService {
 			if (Objects.nonNull(task.getDescription()) && !"".equalsIgnoreCase(task.getDescription())) {
 				originalTask.setDescription(task.getDescription());
 			}
+			if (Objects.nonNull(task.getYield())) {
+				originalTask.setYield(task.getYield());
+			}
 			if (Objects.nonNull(task.getDueDate())) {
 				originalTask.setDueDate(task.getDueDate());
+			}
+			if (Objects.nonNull(task.getCollectionDate())) {
+				originalTask.setCollectionDate(task.getCollectionDate());
 			}
 //			if (Objects.nonNull(task.getPriprityLevel()) && !"".equalsIgnoreCase(task.getPriprityLevel())) {
 //				originalTask.setPriprityLevel(task.getPriprityLevel());
