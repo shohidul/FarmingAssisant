@@ -1,1 +1,252 @@
-knowledgeCorner
+<style>
+		.ajs-dialog{
+			min-height: 400px !important
+		}
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
+}
+</style>
+	<form>
+	  <div class="form-row">
+	  	<div class="col-2"></div>
+	    <div class="col-6">
+	      <input type="text" class="form-control" placeholder="Search here" id="searchbox">
+	    </div>
+	    <div class="col-2"><button type="button" id="searchBtn" class="btn btn-primary mb-2">Search</button></div>
+	    <div class="col-2"></div>
+	  </div>
+	  
+	</form>
+
+<br><br>
+<div class="row">
+	<div class="col-md-1">
+	
+	</div>
+	<div class="col-md-9">
+		<div class="accordion" id="accordionExample">
+
+		</div>
+	</div>
+
+	<div class="col-md-2">
+	<h3>Tags</h3>
+	<div id="tagDiv"></div>
+	</div>
+</div>
+
+  <script>
+  var search = function (searchInput) {
+	  const lowercaseSearchInput = searchInput.toLowerCase().trim();
+	  const searchResults = articles.filter(article => {
+	    const { name, tags, authors } = article;
+	    return (
+	      name.toLowerCase().includes(lowercaseSearchInput) ||
+	      tags.toLowerCase().includes(lowercaseSearchInput) ||
+	      authors.toLowerCase().includes(lowercaseSearchInput)
+	    );
+	  });
+
+	  console.log(searchResults);
+	  showArticles(searchResults);
+	}
+	  
+	  var articles = [{
+		  		id: "article1",
+			    name: "Agriculture: Definition and Overview",
+			    desc: "https://www.researchgate.net/publication/301345493_Agriculture_Definition_and_Overview",
+			    authors: "David R. Harris, Dorian Q Fuller",
+			    type: "PDF",
+			    tags: "pdf, book",
+			    file: "/myfiles/HarrisFullerms.pdf"
+			},
+			{
+		  		id: "article2",
+			    name: "Organic Farming: Concept and Components",
+			    desc: "Organic farming is a production management system excluding of all synthetic off-farm inputs but rely upon on-farm agronomic, biological and mechanical methods like crop rotations, crop residues, animal manures, off-farm organic waste, mineral grade rock additives and biological system of nutrient mobilization and plant protection, etc which promotes and enhances biodiversity, biological cycles and agro-ecosystem health.",
+			    authors: "Hari Prakash Meena",
+			    type: "PDF",
+			    tags: "pdf, book",
+			    file: "/myfiles/OrganicFarming.pdf"
+			},
+			{
+		  		id: "article3",
+			    name: "How Rice Grows",
+			    desc: `
+					<dl class="row">
+				      <div class="row mr-2 ml-2 mb-5">
+						  <dt class="col-sm-3">Rice Lifecycle</dt>
+						  <dd class="col-sm-9">
+						  	<p>You might buy rice in a bag at the grocery store, but it doesn’t come out of the ground that way. Growing rice is a precise science involving specialized technology as well as unique planting and harvesting equipment and methods. U.S. rice mills are among the most advanced in the world, with specialized equipment to mill, sort, and package rice.  </p>
+						  </dd>
+					  </div>
+					
+					  <div class="row mr-2 ml-2 mb-5">
+						  <div class="col-sm-6">
+						  	  <dt><p class="m-0">Field Preparation & Planting</p><small>March – Early August</small></dt>
+							  <dd class="mt-3">
+							    <p>Rice plants grow to a height of three to four feet over an average of 120 days after planting.  During this time, farmers irrigate the rice fields using the method that best fits that field or farm.  The traditional irrigation method is to construct earthen levees that follow the contour of the land and flood the field with about two to four inches of water which is maintained over the growing season.  Flooded fields prevent soil erosion, lead to improved water quality, as well as other environmental benefits like habitat creation. </p>
+							    <p>Farmers can also irrigate their fields with poly-tubing, using precisely punched holes that allow them to apply water more evenly and efficiently across the field. There are even irrigation methods that allow a farmer to grow rice in rows like other crops and apply water periodically during the growing season instead of maintaining a layer of water. Farmers continue to innovate ways to save water and time by using irrigation practices that fit their unique operations.</p>
+							  	<p>By mid to late summer, the rice plant begins to show signs of maturation with the grain appearing in long panicles on the top of the plant.</p>
+							  </dd>
+						  </div>
+						  <div class="col-sm-6 fill">
+						  	<img class="" src="/images/planting.jpg">
+						  </div>
+					  </div>
+					
+					  <div class="row mr-2 ml-2 mb-5">
+						  <div class="col-sm-6 fill">
+						  	<img class="" src="/images/growing.jpg">
+						  </div>
+						  <div class="col-sm-6">
+							  <dt><p class="m-0">Irrigation & Growing</p><small>February – Early May</small></dt>
+							  <dd class="mt-3">
+							    <p>Rice is cultivated differently than other grains because it is a semi-aquatic plant that requires consistent irrigation all season to grow.  Heavy clay and silt loam soils that are often ill-suited to other crops retain water very well, making them perfect for rice.  </p>
+							    <p>Prior to planting, farmers prepare the land using precision GPS and laser-guided earthmoving equipment to create uniform grades and slopes within fields, which decrease water use and increase productivity.</p>
+							  	<p>Planting begins in late February through May depending on the production region.  Farmers use modern technology to plant the seed, either by airplane or grain drill.</p>
+							  </dd>
+						  </div>
+					  </div>
+						
+					  <div class="row mr-2 ml-2 mb-5">
+						  <div class="col-sm-6">
+						  	  <dt><p class="m-0">Harvest</p><small>Mid-July – November</small></dt>
+							  <dd class="mt-3">
+							  <p>When rice is mature, water is drained from the fields and sophisticated combines cut the rice and separate the grain from the stalks.  Harvested grains are taken to drying facilities where they utilize forced warm air to gradually reduce the moisture content to a level best suited to storage before the rice moves to the milling process. </p>
+							  </dd>
+						  </div>
+						  <div class="col-sm-6 fill">
+						  	<img class="" src="/images/harvest.jpg">
+						  </div>
+					  </div>
+					  
+					  <div class="row mr-2 ml-2 mb-5">
+						  <div class="col-sm-6 fill">
+						  	<img class="" src="/images/habitat.jpg">
+						  </div>
+						  <div class="col-sm-6">
+							  <dt><p class="m-0">Wildlife Habitat</p><small>November – February</small></dt>
+							  <dd class="mt-3">
+							  <p>After harvest, farmers put a shallow flood on their rice fields.  Winter-flooded rice fields improve and enhance vital wildlife habitats by providing food and foraging for migratory and wintering fowl.  These fowl return the favor by helping to increase soil nutrients, straw decomposition, reducing weed and insect pressure, and providing other important agronomic advantages.  </p>
+							    <p>In the regions where rice is grown in the U.S., rice agriculture provides 35 percent of the food resources available to migrating and wintering  waterfowl .  The cost of replacing existing rice habitat with managed natural wetlands is more than $3.5 billion.</p>
+							  </dd>
+						  </div>
+					  </div>
+						
+					  <div class="row mr-2 ml-2 mb-5">
+						  <div class="col-sm-6">
+						  	  <dt><p class="m-0">Milling & Storage</p><small>Year-Round</small></dt>
+							  <dd class="mt-3">
+							  <p>The final step in growing rice is milling, a mechanized process that American mills have perfected.</p>
+							    <p>At the mill, the harvested “rough rice" passes through sheller machines to remove the inedible hulls.  This process yields brown rice with the bran layers surrounding the kernel still intact.  Brown rice can be used as is or further milled by machines that rub the grains together under pressure.  This abrasion removes the bran layer to produce white or “polished” whole kernels of rice.  Finally, the white rice is enriched with a thin coating of vitamins to replace some of the nutrients lost during milling.</p>
+							  	<p>Technology has enabled the U.S. rice industry to consistently produce rice of unsurpassed quality.  For example, many U.S. rice mills use laser sorters that look for broken, discolored or immature kernels and remove them from the whole kernels of rice during processing. This ensures consistency in appearance and size.</p>
+							  </dd>
+						  </div>
+						  <div class="col-sm-6 fill">
+						  	<img class="" src="/images/brown-rice-grains.jpg">
+						  </div>
+					  </div>
+					</dl>
+			    `,
+			    authors: "https://www.usarice.com/thinkrice/discover-us-rice/how-rice-grows",
+			    type: "Article",
+			    tags: "article, rice",
+			    file: ""
+			}
+			];
+
+	  function getAutoTextFromArticles(articles) {
+		  const autoTextSet = new Set();
+		  for (const article of articles) {
+		    const tags = article.tags.split(", ").map(tag => tag.trim());
+		    const name = article.name.split(", ").map(name => name.trim());
+		    const authors = article.authors.split(", ").map(author => author.trim());
+		    tags.forEach(tag => autoTextSet.add(tag));
+		    name.forEach(n => autoTextSet.add(n));
+		    authors.forEach(author => autoTextSet.add(author));
+		  }
+		  return [...autoTextSet];
+		}
+	  
+	    var autoTexts = getAutoTextFromArticles(articles); 
+	    $( "#searchbox" ).autocomplete({
+	      source: autoTexts
+	    });
+	  
+	  	function getTagsFromArticles(articles) {
+		  const tagsSet = new Set();
+		  for (const article of articles) {
+		    const tags = article.tags.split(", ").map(tag => tag.trim());
+		    tags.forEach(tag => tagsSet.add(tag));
+		  }
+		  return [...tagsSet];
+		}
+	    
+
+	    
+	    function showArticles(articles){
+	    	
+	    	$("#accordionExample").empty();
+		    for (const article of articles) {
+		    	var body = `
+	                <p>${article.type}</p>
+	                <a class="" onclick='showDetails(${JSON.stringify(article)})'>View details</a>
+		    	`;
+		    	
+		    	if(article.type === "Article"){
+		    		var body = `
+		    			<p class="small">${article.desc}</p><br>
+		    			<p>Type: ${article.type}</p>
+     		            <p><code>Authors: ${article.authors}</code></p>
+			    	`;
+		    	}
+		        var card = `
+		            <div class="card">
+		                <div class="card-header" id="headingOne">
+		                    <h2 class="mb-0">
+		                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#${article.id}" aria-expanded="true" aria-controls="collapseOne">
+		                            ${article.name}
+		                        </button>
+		                    </h2>
+		                </div>
+
+		                <div id="${article.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+		                    <div class="card-body">
+		                    ${body}
+		                    </div>
+		                </div>
+		            </div>
+		        `;
+
+		        $("#accordionExample").append(card);
+		    }
+	    }
+	    showArticles(articles);
+	    
+	    $("#searchBtn").click(function(){
+	            const searchInput = document.getElementById("searchbox").value.toLowerCase();
+	            search(searchInput);
+	        })
+
+	        
+
+	  	var availableTags = getTagsFromArticles(articles);
+	  	for (index in availableTags) {
+	  		$("#tagDiv").append(`<a href="#" class="tags-search">${availableTags[index]} </a>`);
+	  	}
+
+	    $("#tagDiv").on("click", ".tags-search", function(){
+            const searchInput = $(this).text();
+            search(searchInput);
+        })
+
+  </script>

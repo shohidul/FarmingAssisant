@@ -1,1 +1,48 @@
-weather
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Weather</title>
+</head>
+<body>
+    <h1>Local Weather</h1>
+    <p id="weather-info">Fetching weather data...</p>
+
+    <script>
+        // Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
+        var apiKey = '40307bfee8eb5c663e27585d288855d5';
+        var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q={CITY_NAME}&APPID=${apiKey}&units=metric`;
+
+        // Function to fetch weather data from the API
+        async function getWeather(city) {
+            const response = await fetch(apiUrl.replace('{CITY_NAME}', city));
+            const data = await response.json();
+            return data;
+        }
+
+        // Function to display weather information
+        function displayWeather(weatherData) {
+            const weatherInfo = document.getElementById('weather-info');
+            const cityName = weatherData.name;
+            const temperature = weatherData.main.temp;
+            const humidity = weatherData.main.humidity;
+            const windSpeed = weatherData.wind.speed;
+            const weatherDescription = weatherData.weather[0].description;
+
+            const weatherText = `Weather in ${cityName}: 
+            Temperature: ${temperature}°C, 
+            Humidity: ${humidity}%, 
+            Wind Speed: ${windSpeed} m/s,
+            Description: ${weatherDescription}`;
+
+            weatherInfo.innerText = weatherText;
+        }
+
+        // Change 'YourCityName' to your desired city
+        var city = 'Dhaka';
+
+        getWeather(city)
+            .then(weatherData => displayWeather(weatherData))
+            .catch(error => console.error('Error fetching weather data:', error));
+    </script>
+</body>
+</html>

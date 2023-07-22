@@ -62,6 +62,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 				"/images/**", 
 				"/fonts/**", 
 				"/scripts/**",
+				"/myfiles/**",
 				"/pages/**", };
 		
 		http.cors().and().csrf().disable()
