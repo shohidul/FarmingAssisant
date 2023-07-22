@@ -1,1 +1,1 @@
-# GenericFOS
+# FarmingAssistant
