@@ -46,6 +46,9 @@ public class TaskMonitoringServiceImpl implements TaskMonitoringService {
 			if (Objects.nonNull(task.getTaskId())) {
 				originalTask.setTaskId(task.getTaskId());
 			}
+			if (Objects.nonNull(task.getQuantity())) {
+				originalTask.setQuantity(task.getQuantity());
+			}
 			if (Objects.nonNull(task.getNotes()) && !"".equalsIgnoreCase(task.getNotes())) {
 				originalTask.setNotes(task.getNotes());
 			}

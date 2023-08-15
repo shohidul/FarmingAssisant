@@ -23,6 +23,7 @@ public class TaskMonitoring {
 	private String notes;
 	private Date applicationDate;
 	private String fertilizerType;
+	private Integer quantity;
 
 	@Column(updatable = false)
 	@CreationTimestamp
@@ -83,6 +84,14 @@ public class TaskMonitoring {
 		this.fertilizerType = fertilizerType;
 	}
 
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
@@ -102,7 +111,7 @@ public class TaskMonitoring {
 	@Override
 	public String toString() {
 		return "TaskMonitoring [id=" + id + ", taskId=" + taskId + ", cropId=" + cropId + ", notes=" + notes
-				+ ", applicationDate=" + applicationDate + ", fertilizerType=" + fertilizerType + ", createdDate="
-				+ createdDate + ", updatedDate=" + updatedDate + "]";
+				+ ", applicationDate=" + applicationDate + ", fertilizerType=" + fertilizerType + ", quantity="
+				+ quantity + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 }
