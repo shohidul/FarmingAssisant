@@ -212,6 +212,8 @@
 				            </select>
 				        </div>
 				    </div>
+				    
+				    
           	<!-- 	<div class="form-group">
 					      <div class="col-sm-8 custom-control custom-checkbox mr-sm-2">
 					        <input type="checkbox" class="custom-control-input" id="taskStatus">
@@ -227,7 +229,6 @@
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-    
         </div>
     </div>
 
@@ -264,7 +265,7 @@
 				            	<input type="hidden" class="form-control h-task-dueDate" value="${formattedDate}">
 				                <span class="bottom-left task-dueDate ${isDue}"><b>Planting date: </b>${formattedDate}</span>`+
 				    '            <div class="bottom-right">'+
-				    "        		<a onclick='editTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteTask("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>" +
+				    "        		<a onclick='monitorTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-clipboard'></a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick='editTask("+JSON.stringify(task)+")' class='edit-btn fa-regular fa-pen-to-square'></a>&nbsp;&nbsp;<a  onclick='deleteTask("+ task.id +")'class='delete-btn fa-solid fa-trash-can'>&#xe020;</a>" +
 				    '       	 </div>' +
 				            `</div>
 				        </div>
@@ -466,7 +467,6 @@
         });
 
         function editTask(task){
-        	console.log(task);
         	$("#myModal").modal('show');
             
         	const cropInfoDiv = $("#cropInfo");
@@ -482,6 +482,11 @@
             $("#climateType").val(task.climateType);
             $("#taskStatus").prop("checked", task.status === "1" ? true:false);
             $("#addBtn").text("Update");
+        }
+        
+        function monitorTask(task){
+        	window.localStorage.setItem("taskMonitor", JSON.stringify(task));
+        	loadPage("taskMonitor");
         }
 
         $("#modalBtn").click(function () {$("#taskForm")[0].reset()});
